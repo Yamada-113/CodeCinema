@@ -3,169 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Movie Booking | CodeCinema</title>
-  <link rel="stylesheet" href="/css/seat.css">
-
-<style>
-body {
-  margin: 0;
-  background: #0f1115;
-  color: #fff;
-  font-family: 'Segoe UI', sans-serif;
-}
-
-.container {
-  display: flex;
-  max-width: 1300px;
-  margin: 40px auto;
-  gap: 32px;
-}
-
-/* LEFT */
-.movie-info {
-  width: 280px;
-  background: #181b22;
-  padding: 20px;
-  border-radius: 16px;
-}
-
-.poster {
-  width: 100%;
-  border-radius: 12px;
-}
-
-.meta {
-  color: #9aa0aa;
-  font-size: 14px;
-}
-
-.play-btn {
-  width: 100%;
-  margin-top: 16px;
-  padding: 10px;
-  background: #4f7cff;
-  border: none;
-  border-radius: 10px;
-  color: white;
-}
-
-/* RIGHT */
-.booking {
-  flex: 1;
-  background: #181b22;
-  padding: 24px;
-  border-radius: 16px;
-}
-
-.steps {
-  display: flex;
-  gap: 20px;
-  font-size: 12px;
-  color: #777;
-}
-
-.steps .active {
-  color: #4f7cff;
-}
-
-/* DATE & TIME */
-.days span,
-.times button {
-  margin: 6px;
-  padding: 10px 14px;
-  border-radius: 8px;
-  background: #0f1115;
-  border: none;
-  color: #aaa;
-}
-
-.active {
-  background: #4f7cff !important;
-  color: #fff !important;
-  border-radius: 8px;
-}
-
-/* SCREEN */
-.screen {
-  text-align: center;
-  margin: 24px 0;
-  letter-spacing: 4px;
-  color: #777;
-}
-
-/* SEATS */
-.seats {
-  display: grid;
-  grid-template-columns:
-    repeat(4, 26px)
-    40px
-    repeat(8, 26px)
-    40px
-    repeat(4, 26px);
-  gap: 12px;
-  justify-content: center;
-}
-
-.seat {
-  width: 26px;
-  height: 26px;
-  background: #2a2e38;
-  border-radius: 6px;
-  transition: 0.2s;
-}
-
-.seat:hover:not(.taken) {
-  background: #3a3f4f;
-}
-
-.seat.selected {
-  background: #4f7cff;
-}
-
-.seat.taken {
-  background: #ff6b6b;
-}
-
-.aisle {
-  width: 40px;
-  height: 26px;
-}
-
-/* LEGEND */
-.legend {
-  display: flex;
-  gap: 20px;
-  margin: 16px 0;
-  font-size: 13px;
-  color: #aaa;
-}
-
-.legend i {
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  margin-right: 6px;
-}
-
-/* BUTTON */
-.next {
-  float: right;
-  padding: 12px 20px;
-  background: #4f7cff;
-  border: none;
-  border-radius: 10px;
-  color: #fff;
-}
-
-.back {
-  float: left;
-  padding: 12px 20px;
-  background: #4f7cff;
-  border: none;
-  border-radius: 10px;
-  color: #fff;
-}
-
-  </style>
+  <link rel="stylesheet" href="{{ asset('css/styleMovie.css') }}">
 
 </head>
 <body>
@@ -251,7 +89,6 @@ body {
       for (let i = 0; i < 4; i++){
           document.write('<div class="seat"></div>');
         }
-
 }
 
   </script>
@@ -264,8 +101,8 @@ body {
       <span><i class="seat taken"></i> Taken</span>
     </div>
 
-    <button class="next">Continue</button>
-    <button class="back">Back</button>
+    <a href="#" class="continue">Continue</a>
+    <a href="/home" class="back">Back</a>
 
   </main>
 </div>

@@ -1,10 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MovieController;
+use App\Http\Controllers\HomeController;
 
-Route::get('/home', function () {
-    return view('home');
+Route::get('/home', [HomeController::class, 'index']);
+Route::get('/movieDetails', [MovieController::class, 'show']);
+
+
+Route::get('/login', function () {
+    return view('login');
 });
-Route::get('/movie', function () {
-    return view('movie');
+Route::get('/register', function () {
+    return view('register');
 });
