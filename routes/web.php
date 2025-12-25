@@ -1,8 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\HomeController;
+use Illuminate\Http\Request;
 
 Route::get('/home', [HomeController::class, 'index']);
 Route::get('/movieDetails', [MovieController::class, 'show']);
@@ -14,3 +16,29 @@ Route::get('/login', function () {
 Route::get('/register', function () {
     return view('register');
 });
+
+Route::get('/payment', function () {
+    
+    $booking = session('booking', [
+        'movie' => 'Interstellar',
+        'date' => 'Thursday, 4 May',
+        'time' => '20:00',
+        'seats' => ['A1', 'A2'],
+        'price' => 50000
+    ]);
+
+    return view('payment', compact('booking'));
+});
+Route::post('/payment/process', function (Request $request) {
+    $request->validate([
+        'name'   => 'required',
+        'email'  => 'required|email',
+        'method' => 'required'
+    ]);
+
+    session()->forget('booking');
+
+    return redirect('/payment')
+        ->with('success', 'Pembayaran berhasil! Tiket Anda telah dipesan.');
+});
+
