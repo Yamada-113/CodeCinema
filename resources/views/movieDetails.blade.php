@@ -39,7 +39,7 @@
     <!-- LOCATION -->
     <br>
     <section class="mall">
-  <h3>SELECT THE CINEMA LOCATION</h3>
+  <h3>Select The Cinema Location</h3>
 
   <div class="mall-list">
 
