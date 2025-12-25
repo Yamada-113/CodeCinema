@@ -156,3 +156,52 @@ body {
   border-radius: 10px;
   color: #fff;
 }
+
+/* LOCATION */ 
+.mall h3{
+  color:white;
+  margin-bottom:12px;
+  font-size:18px;
+}
+
+.mall-list{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap:14px;
+}
+
+.mall-card{
+  background: rgba(15, 23, 42, .8);
+  border: 1px solid #1e293b;
+  padding:14px;
+  border-radius:16px;
+  cursor:pointer;
+  transition:.2s ease;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 0 0 rgba(37,99,235,0);
+}
+
+.mall-card:hover{
+  border-color:#2563eb;
+  box-shadow:none;   
+  transform: translateY(-2px);
+}
+
+.mall-card.active{
+  background:#3b82f6;   
+  border-color:#3b82f6;
+  box-shadow:none;      
+}
+
+.mall-title{
+  color:white;
+  font-weight:700;
+  display:block;
+  font-size:15px;
+}
+
+.mall-city{
+  color:#cbd5f5;
+  font-size:12px;
+  opacity:.8;
+}

@@ -36,6 +36,37 @@
       <span>03 Complete</span>
     </div>
 
+    <!-- LOCATION -->
+    <br>
+    <section class="mall">
+  <h3>SELECT THE CINEMA LOCATION</h3>
+
+  <div class="mall-list">
+
+    <div class="mall-card active">
+      <span class="mall-title">Grand Indonesia</span>
+      <span class="mall-city">Jakarta</span>
+    </div>
+
+    <div class="mall-card">
+      <span class="mall-title">Mall Taman Anggrek</span>
+      <span class="mall-city">Jakarta</span>
+    </div>
+
+    <div class="mall-card">
+      <span class="mall-title">Mall Of Indonesia</span>
+      <span class="mall-city">Jakarta</span>
+    </div>
+
+    <div class="mall-card">
+      <span class="mall-title">Green Pramuka Mall</span>
+      <span class="mall-city">Jakarta</span>
+    </div>
+
+  </div>
+  </section>
+
+
     <!-- DATE -->
     <section class="date">
       <h3>Thursday, 4 May</h3>
