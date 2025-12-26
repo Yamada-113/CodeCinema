@@ -135,7 +135,7 @@ $rows = 8;        //FYI: INI BLM FINAL (bakal di implementasi ulang pake DB pros
       <span><i class="seat taken"></i> Taken</span>
     </div>
 
-    <a href="#" class="continue">Continue</a>
+    <a href="/payment" class="continue">Continue</a>
     <a href="/home" class="back">Back</a>
 
   </main>
