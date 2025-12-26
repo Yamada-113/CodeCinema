@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 Route::get('/home', [HomeController::class, 'index']);
 Route::get('/movieDetails', [MovieController::class, 'show']);
 
-
 Route::get('/login', function () {
     return view('login');
 });
@@ -41,4 +40,11 @@ Route::post('/payment/process', function (Request $request) {
     return redirect('/payment')
         ->with('success', 'Pembayaran berhasil! Tiket Anda telah dipesan.');
 });
+
+   Route::post('/set-location', function (Request $request) {
+    session(['location' => $request->location]);
+    return back();
+})->name('set.location');
+
+
 
