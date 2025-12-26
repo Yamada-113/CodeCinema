@@ -1,12 +1,13 @@
 body {
   margin: 0;
-  background: #0f1115;
+  background: #090a0c;
   color: #fff;
   font-family: 'Segoe UI', sans-serif;
 }
 
 .container {
-  display: flex;
+  display: grid;
+  grid-template-columns: 340px minmax(0, 1fr);
   max-width: 1300px;
   margin: 40px auto;
   gap: 32px;
@@ -15,8 +16,13 @@ body {
 /* LEFT */
 .movie-info {
   width: 280px;
-  background: #181b22;
-  padding: 20px;
+  /* background: rgb(24, 27, 34); */
+  background: linear-gradient(
+    to top,
+    rgba(2, 15, 58, 0.26),
+    rgb(6, 7, 10)
+  );
+  padding: 30px;
   border-radius: 16px;
 }
 
@@ -42,7 +48,11 @@ body {
 
 .booking {
   flex: 1;
-  background: #181b22;
+  background: linear-gradient(
+    to right,
+   rgba(2, 15, 58, 0.26),
+    rgb(6, 7, 10)
+  );
   padding: 24px;
   border-radius: 16px;
 }
@@ -58,8 +68,55 @@ body {
   color: #4f7cff;
 }
 
-/* DATE & TIME */
-.days span,
+.calendar-grid {
+  display: grid !important;
+  grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+/* DATE BOX */
+.date-box {
+  background: #0f172a;
+  border-radius: 14px;
+  padding: 12px 0;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.date-box:hover {
+  background: #1e293b;
+}
+
+/* DAY */
+.date-box .day {
+  display: block;
+  font-size: 11px;
+  color: #94a3b8;
+  margin-bottom: 6px;
+  letter-spacing: 1px;
+}
+
+/* DATE */
+.date-box .date {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* ACTIVE */
+.date-box.active {
+  background: #3b82f6;
+}
+
+.date-box.active .day,
+.date-box.active .date {
+  color: #fff;
+}
+
+/* PRICE & TIME */
 .times button {
   margin: 6px;
   padding: 10px 14px;
@@ -69,11 +126,11 @@ body {
   color: #aaa;
 }
 
-.active {
+/* .active {
   background: #4f7cff !important;
   color: #fff !important;
   border-radius: 8px;
-}
+} */
 
 /* SCREEN */
 .screen {
@@ -81,6 +138,45 @@ body {
   margin: 24px 0;
   letter-spacing: 4px;
   color: #777;
+}
+
+.screen-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 30px 0 40px;
+}
+
+.screen-curved {
+  width: 70%;
+  height: 18px;
+
+  background: linear-gradient(
+    to bottom,
+    #e5e7eb,
+    #9ca3af
+  );
+
+  border-radius: 0 0 120px 120px;
+  transform: perspective(400px) rotateX(-18deg);
+
+  box-shadow:
+    0 10px 25px rgba(255,255,255,0.15),
+    0 0 40px rgba(255,255,255,0.05);
+
+  position: relative;
+}
+
+.screen-curved::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 0 0 120px 120px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.6),
+    transparent
+  );
+  opacity: 0.4;
 }
 
 /* SEATS */

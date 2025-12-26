@@ -20,6 +20,11 @@
     <div class="detail">
       <p><strong>Director</strong><br>Rupert Sanders</p>
       <p><strong>Genre</strong><br>Action, Sci-Fi</p>
+      <p><strong>Description</strong><br>
+      Film ini bercerita tentang sekelompok astronaut yang menuju lubang cacing (worm hole) 
+      dekat Saturnus untuk mencari planet baru yang mampu merumahi manusia, ditengah era distopia. 
+      Naskah aslinya ditulis Jonathan pada tahun 2007, kemudian dilanjuti Christopher dan Jonathan.
+    </p>
     </div>
 
     <button class="play-btn">▶ Trailer</button>
@@ -67,29 +72,45 @@
   </div>
   </section>
 
-    <!-- DATE -->
-    <section class="date">
-      <h3>Thursday, 4 May</h3>
-      <div class="days">
-        <span>1</span><span>2</span><span>3</span>
-        <span class="active">4</span>
-        <span>5</span><span>6</span>
+<div class="calendar">
+  @php
+    $calendar = [
+      ['day'=>'MON','date'=>1],
+      ['day'=>'TUE','date'=>2],
+      ['day'=>'WED','date'=>3],
+      ['day'=>'THU','date'=>4],
+      ['day'=>'FRI','date'=>5],
+      ['day'=>'SAT','date'=>6],
+      ['day'=>'SUN','date'=>7],
+    ];
+  @endphp
+
+  <div class="calendar-grid">
+    @foreach ($calendar as $c)
+      <div class="date-box {{ $c['date'] == 4 ? 'active' : '' }}">
+        <span class="day">{{ $c['day'] }}</span>
+        <span class="date">{{ $c['date'] }}</span>
       </div>
-    </section>
+    @endforeach
+  </div>
+</div>
 
     <!-- TIME -->
     <section class="time">
       <h3>Show Time</h3>
       <div class="times">
-        <button>10:00</button>
-        <button>12:30</button>
-        <button>15:30</button>
-        <button class="active">20:00</button>
-        <button>22:30</button>
+        <button>10:00 | Rp50.000</button>
+        <button>12:30 | Rp50.000</button>
+        <button>15:30 | Rp50.000</button>
+        <button class="active">20:00 | Rp50.000</button>
+        <button>22:30 | Rp65.000</button>
       </div>
     </section>
 
     <!-- SCREEN -->
+    <div class="screen-wrapper">
+      <div class="screen-curved"></div>
+    </div>
     <div class="screen">SCREEN</div>
 
     <!-- SEATS -->

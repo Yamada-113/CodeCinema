@@ -42,10 +42,3 @@ Route::post('/payment/process', function (Request $request) {
         ->with('success', 'Pembayaran berhasil! Tiket Anda telah dipesan.');
 });
 
-   Route::post('/set-location', function (Request $request) {
-    session(['location' => $request->location]);
-    return back();
-})->name('set.location');
-
-
-

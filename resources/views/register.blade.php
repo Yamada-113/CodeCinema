@@ -32,11 +32,16 @@
       </div>
 
       <div class="input-group">
+        <input type="text" required>
+        <label>No.Hp</label>
+      </div>
+
+      <div class="input-group">
         <input type="password" required>
         <label>Password</label>
       </div>
 
-    <a href="/home" class="login-btn">Register</a>
+    <a href="/login" class="login-btn">Register</a>
 
       <div class="extra">
         <span>Already have an account?</span>

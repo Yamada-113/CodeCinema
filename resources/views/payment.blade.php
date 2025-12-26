@@ -5,7 +5,7 @@
     <title>Payment | CodeCinema</title>
     <style>
         body {
-            background: #0b1220;
+            background: #090a0c;
             font-family: 'Segoe UI', sans-serif;
             color: #fff;
         }
@@ -13,11 +13,15 @@
             max-width: 1100px;
             margin: 40px auto;
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 340px minmax(0, 1fr);
             gap: 30px;
         }
         .card {
-            background: #111827;
+            background: linear-gradient(
+                to top,
+                rgba(2, 15, 58, 0.26),
+                rgb(6, 7, 10)
+            );
             border-radius: 12px;
             padding: 25px;
         }
@@ -49,6 +53,7 @@
             border: none;
             background: #1f2937;
             color: white;
+            box-sizing: border-box;
         }
         button {
             width: 100%;
