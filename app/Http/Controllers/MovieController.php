@@ -8,4 +8,5 @@ class MovieController extends Controller
     {
         return view('movieDetails');
     }
+
 }

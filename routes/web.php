@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 Route::get('/home', [HomeController::class, 'index']);
 Route::get('/movieDetails', [MovieController::class, 'show']);
+// Route::get('/movieDetails/taken', [MovieController::class, 'taken']);
 
 
 Route::get('/login', function () {

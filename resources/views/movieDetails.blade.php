@@ -66,7 +66,6 @@
   </div>
   </section>
 
-
     <!-- DATE -->
     <section class="date">
       <h3>Thursday, 4 May</h3>
@@ -93,40 +92,44 @@
     <div class="screen">SCREEN</div>
 
     <!-- SEATS -->
-    <div class="seats">
-  <script>
-    const rows = 8;
-    // const taken = Math.random() < 16 ? 'taken' : '';
+@php
+$rows = 8;        //FYI: INI BLM FINAL (bakal di implementasi ulang pake DB proses random cukup 1x dan simpan)
+@endphp
+<!-- It's not flexible it just to make the point that it's taken reeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee -->
+<div class="seats">
+@for ($r = 0; $r < $rows; $r++)
 
-    for (let r = 0; r < rows; r++) {
+  @php
+    $rowLetter = chr(65 + $r);
+    $taken = collect(range(1,16))->random(rand(3,5))->toArray();
+    $seat = 1;
+  @endphp
 
-      // kiri
-      for (let i = 0; i < 4; i++){
-          document.write('<div class="seat"></div>');
-        }
+  <div class="row-label">{{ $rowLetter }}</div>
 
-      // aisle
-      document.write('<div class="aisle"></div>');
+  @for ($i = 0; $i < 4; $i++)
+    <div class="seat {{ in_array($seat++, $taken) ? 'taken' : '' }}"></div>
+  @endfor
 
-      // tengah
-      for (let i = 0; i < 8; i++){
-          document.write('<div class="seat"></div>');
-        }
-          
-      // aisle
-      document.write('<div class="aisle"></div>');
+  <div class="aisle"></div>
 
-      // kanan
-      for (let i = 0; i < 4; i++){
-          document.write('<div class="seat"></div>');
-        }
-}
+  @for ($i = 0; $i < 8; $i++)
+    <div class="seat {{ in_array($seat++, $taken) ? 'taken' : '' }}"></div>
+  @endfor
 
-  </script>
+  <div class="aisle"></div>
+
+  @for ($i = 0; $i < 4; $i++)
+    <div class="seat {{ in_array($seat++, $taken) ? 'taken' : '' }}"></div>
+  @endfor
+
+  <div class="row-label">{{ $rowLetter }}</div>
+
+@endfor
 </div>
 
-    <!-- LEGEND -->
-    <div class="legend">
+    <!-- STATUS -->
+    <div class="status">
       <span><i class="seat"></i> Available</span>
       <span><i class="seat selected"></i> Selected</span>
       <span><i class="seat taken"></i> Taken</span>
