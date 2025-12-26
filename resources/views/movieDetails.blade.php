@@ -62,6 +62,7 @@
       <span class="mall-title">Green Pramuka Mall</span>
       <span class="mall-city">Jakarta</span>
     </div>
+    </form>
 
   </div>
   </section>

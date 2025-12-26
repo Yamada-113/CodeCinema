@@ -88,6 +88,7 @@
         <p><b>Movie:</b> {{ $booking['movie'] }}</p>
         <p><b>Date:</b> {{ $booking['date'] }}</p>
         <p><b>Show Time:</b> {{ $booking['time'] }}</p>
+        <p><strong>Lokasi:</strong> {{ session('location', '-') }}</p>
         <p><b>Seats:</b> {{ implode(', ', $booking['seats']) }}</p>
         <p><b>Price / Seat:</b> Rp {{ number_format($booking['price']) }}</p>
 
