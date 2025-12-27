@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Movie App - CodeCinema</title>
-  <link rel="stylesheet" href="{{ asset('css/styleHome.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/styleHomeAdmin.css') }}">
 </head>
 <body>
 
@@ -18,6 +18,10 @@
 
 <section class="section">
   <h2>Now Playing</h2>
+  <section class="section admin-controls">
+    <button class="btn-primary" onclick="openModal('add')">+ Add New Movie</button>
+</section>
+
   <div class="movie-row">
     
     <div class="movie-card">
@@ -28,7 +32,10 @@
           <span class="age">13+</span>
           <span class="duration">169 min</span>
         </div>
-        <a href="/movieDetails" class="watch">Watch</a>
+        <div class="crud-actions">
+            <button class="edit" onclick="openModal('edit', 'Interstellar')">Edit</button>
+            <button class="delete" onclick="return confirm('Hapus film ini?')">Hapus</button>
+        </div>
       </div>
     </div>
 
@@ -40,7 +47,10 @@
           <span class="age">7+</span>
           <span class="duration">119 min</span>
         </div>
-        <a href="/movieDetails" class="watch">Watch</a>
+        <div class="crud-actions">
+            <button class="edit" onclick="openModal('edit', 'Interstellar')">Edit</button>
+            <button class="delete" onclick="return confirm('Hapus film ini?')">Hapus</button>
+        </div>
       </div>
     </div>
 
@@ -52,7 +62,10 @@
           <span class="age">17+</span>
           <span class="duration">116 min</span>
         </div>
-        <a href="/movieDetails" class="watch">Watch</a>
+        <div class="crud-actions">
+            <button class="edit" onclick="openModal('edit', 'Interstellar')">Edit</button>
+            <button class="delete" onclick="return confirm('Hapus film ini?')">Hapus</button>
+        </div>
       </div>
     </div>
 
@@ -64,7 +77,10 @@
           <span class="age">17+</span>
           <span class="duration">95 min</span>
         </div>
-        <a href="/movieDetails" class="watch">Watch</a>
+        <div class="crud-actions">
+            <button class="edit" onclick="openModal('edit', 'Interstellar')">Edit</button>
+            <button class="delete" onclick="return confirm('Hapus film ini?')">Hapus</button>
+        </div>
       </div>
     </div>
 
@@ -76,7 +92,10 @@
           <span class="age">17+</span>
           <span class="duration">95 min</span>
         </div>
-        <a href="/movieDetails" class="watch">Watch</a>
+        <div class="crud-actions">
+            <button class="edit" onclick="openModal('edit', 'Interstellar')">Edit</button>
+            <button class="delete" onclick="return confirm('Hapus film ini?')">Hapus</button>
+        </div>
       </div>
     </div>
 
@@ -88,7 +107,10 @@
           <span class="age">17+</span>
           <span class="duration">95 min</span>
         </div>
-        <a href="/movieDetails" class="watch">Watch</a>
+        <div class="crud-actions">
+            <button class="edit" onclick="openModal('edit', 'Interstellar')">Edit</button>
+            <button class="delete" onclick="return confirm('Hapus film ini?')">Hapus</button>
+        </div>
       </div>
     </div>
 
@@ -100,7 +122,10 @@
           <span class="age">17+</span>
           <span class="duration">95 min</span>
         </div>
-        <a href="/movieDetails" class="watch">Watch</a>
+        <div class="crud-actions">
+            <button class="edit" onclick="openModal('edit', 'Interstellar')">Edit</button>
+            <button class="delete" onclick="return confirm('Hapus film ini?')">Hapus</button>
+        </div>
       </div>
     </div>
 
@@ -109,6 +134,9 @@
 
 <section class="section">
   <h2>Coming Soon</h2>
+  <section class="section admin-controls">
+    <button class="btn-primary" onclick="openModal('add')">+ Add New Movie</button>
+</section>
   <div class="movie-row">
     <div class="movie-card coming">
       <img src="https://i.pinimg.com/1200x/e2/4f/47/e24f47ae328185e4fe30b80ca9e4650d.jpg" alt="Little Women">
@@ -117,6 +145,10 @@
         <div class="meta">
           <span class="age">SU</span>
           <span class="duration">135 min</span>
+        </div>
+        <div class="crud-actions">
+            <button class="edit" onclick="openModal('edit', 'Interstellar')">Edit</button>
+            <button class="delete" onclick="return confirm('Hapus film ini?')">Hapus</button>
         </div>
       </div>
     </div>
@@ -129,6 +161,10 @@
           <span class="age">SU</span>
           <span class="duration">135 min</span>
         </div>
+        <div class="crud-actions">
+            <button class="edit" onclick="openModal('edit', 'Interstellar')">Edit</button>
+            <button class="delete" onclick="return confirm('Hapus film ini?')">Hapus</button>
+        </div>
       </div>
     </div>
 
@@ -139,6 +175,10 @@
         <div class="meta">
           <span class="age">SU</span>
           <span class="duration">135 min</span>
+        </div>
+        <div class="crud-actions">
+            <button class="edit" onclick="openModal('edit', 'Interstellar')">Edit</button>
+            <button class="delete" onclick="return confirm('Hapus film ini?')">Hapus</button>
         </div>
       </div>
     </div>
@@ -151,6 +191,10 @@
           <span class="age">SU</span>
           <span class="duration">135 min</span>
         </div>
+        <div class="crud-actions">
+            <button class="edit" onclick="openModal('edit', 'Interstellar')">Edit</button>
+            <button class="delete" onclick="return confirm('Hapus film ini?')">Hapus</button>
+        </div>
       </div>
     </div>
 
@@ -161,6 +205,10 @@
         <div class="meta">
           <span class="age">SU</span>
           <span class="duration">135 min</span>
+        </div>
+        <div class="crud-actions">
+            <button class="edit" onclick="openModal('edit', 'Interstellar')">Edit</button>
+            <button class="delete" onclick="return confirm('Hapus film ini?')">Hapus</button>
         </div>
       </div>
     </div>
@@ -173,6 +221,10 @@
           <span class="age">SU</span>
           <span class="duration">135 min</span>
         </div>
+        <div class="crud-actions">
+            <button class="edit" onclick="openModal('edit', 'Interstellar')">Edit</button>
+            <button class="delete" onclick="return confirm('Hapus film ini?')">Hapus</button>
+        </div>
       </div>
     </div>
 
@@ -184,6 +236,10 @@
           <span class="age">SU</span>
           <span class="duration">135 min</span>
         </div>
+        <div class="crud-actions">
+            <button class="edit" onclick="openModal('edit', 'Interstellar')">Edit</button>
+            <button class="delete" onclick="return confirm('Hapus film ini?')">Hapus</button>
+        </div>
       </div>
     </div>
 
@@ -191,11 +247,13 @@
     </div>
 </section>
 
+
 <nav class="bottom-nav">
   <a href="/home" class="active">Home</a>
   <a href="/movies">Movies</a>
   <a href="/tickets">Tickets</a>
   <a href="/profile">Profile</a>
 </nav>
+
 </body>
 </html>

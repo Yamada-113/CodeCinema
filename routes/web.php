@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use Illuminate\Http\Request;
 
 Route::get('/home', [HomeController::class, 'index']);
+Route::get('/homeAdmin', [HomeController::class, 'admin']);
 Route::get('/movieDetails', [MovieController::class, 'show']);
 // Route::get('/movieDetails/taken', [MovieController::class, 'taken']);
 

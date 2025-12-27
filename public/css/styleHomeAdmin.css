@@ -26,6 +26,7 @@ body {
   font-size: 20px;
   color: #4f7cff;
 }
+
 .section {
   padding: 16px 0 16px 16px; 
 }
@@ -58,6 +59,7 @@ body {
   display: flex;
   flex-direction: column;
   scroll-snap-align: start; 
+  position: relative;
 }
 
 .movie-card img {
@@ -160,6 +162,68 @@ body {
 .bottom-nav a:hover {
   color: #ffffff;
 }
+/* --- Tombol + Add New Movie (Gaya Premium) --- */
+.btn-primary {
+  background: linear-gradient(135deg, #4f7cff, #365fcc);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 4px 15px rgba(79, 124, 255, 0.3);
+  margin-bottom: 20px;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(79, 124, 255, 0.5);
+}
+
+/* --- Area Tombol Edit & Hapus --- */
+.crud-actions {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+/* Base Style untuk Button */
+.crud-actions a, .crud-actions button {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.edit {
+  background: rgba(79, 124, 255, 0.1);
+  color: #4f7cff;
+  border: 1px solid #4f7cff;
+}
+
+.edit:hover {
+  background: #4f7cff;
+  color: #fff;
+}
+
+.delete {
+  background: rgba(255, 61, 61, 0.1);
+  color: #ff3d3d;
+  border: 1px solid #ff3d3d;
+}
+
+.delete:hover {
+  background: #ff3d3d;
+  color: #fff;
+}
+
 .header-right {
   display: flex;
   flex-direction: column;
