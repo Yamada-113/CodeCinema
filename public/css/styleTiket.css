@@ -1,0 +1,91 @@
+
+
+.title{
+    text-align:center;
+    font-size:24px;
+    font-weight:bold;
+    margin-top:25px;
+}
+
+body{
+    background:#000;
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+    color:rgb(0, 0, 0);
+    margin:0;
+}
+
+.detail-section{
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+}
+
+.movie{
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+/* kartu e-ticket */
+.ticket-card{
+    width: 750px;
+    margin:30px auto;
+    background:#0f0f0f;
+    border-radius:18px;
+    box-shadow:0 10px 30px rgba(255,255,255,.08);
+    padding:25px 35px;
+    display:grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap:25px;
+    color:white;
+}
+
+/* POSTER FILM */
+.poster {
+    max-width: 350px;  
+    height: auto;
+    border-radius: 12px;
+    display: block;
+    margin: 0 auto;     
+}
+
+
+/* QR CODE BOX */
+.qr-box{
+    width:30px;
+    height:30px;
+    border:2px dashed #aaa;
+    border-radius:10px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-top:15px;
+    font-size:12px;
+    text-align:center;
+}
+
+/* teks kanan */
+.label{
+    font-weight:bold;
+}
+
+.row{
+    display:flex;
+    justify-content:space-between;
+    border-bottom:1px solid #333;
+    padding:6px 0;
+}
+
+.qr-ticket{
+    text-align:center;
+    margin-top: 15px;
+}
+
+.qr-img{
+    width: 160px;
+    height: 160px;
+}
+
+.qr-text{
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+}

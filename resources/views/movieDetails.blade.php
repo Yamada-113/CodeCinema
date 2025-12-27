@@ -48,13 +48,13 @@
 
   <div class="mall-list">
 
-    <div class="mall-card active">
-      <span class="mall-title">Grand Indonesia</span>
+    <div class="mall-card">
+      <span class="mall-title">Mall Taman Anggrek</span>
       <span class="mall-city">Jakarta</span>
     </div>
 
-    <div class="mall-card">
-      <span class="mall-title">Mall Taman Anggrek</span>
+    <div class="mall-card active">
+      <span class="mall-title">Grand Indonesia</span>
       <span class="mall-city">Jakarta</span>
     </div>
 
@@ -170,6 +170,28 @@ $rows = 8;        //FYI: INI BLM FINAL (bakal di implementasi ulang pake DB pros
     });
   });
 </script>
+
+//
+<script>
+document.querySelectorAll('.mall-card').forEach(card => {
+
+    card.addEventListener('click', () => {
+
+        document.querySelectorAll('.mall-card')
+            .forEach(c => c.classList.remove('active'));
+
+        card.classList.add('active');
+
+        const location = card.getAttribute('data-location');
+
+        document.getElementById('locationInput').value = location;
+
+        document.getElementById('locForm').submit();
+    });
+
+});
+</script>
+
 
 </body>
 </html>

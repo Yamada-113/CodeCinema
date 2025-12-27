@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 Route::get('/home', [HomeController::class, 'index']);
 Route::get('/homeAdmin', [HomeController::class, 'admin']);
 Route::get('/movieDetails', [MovieController::class, 'show']);
-// Route::get('/movieDetails/taken', [MovieController::class, 'taken']);
+//Route::get('/movieDetails/taken', [MovieController::class, 'taken']);
 
 Route::get('/login', function () {
     return view('login');
@@ -42,4 +42,24 @@ Route::post('/payment/process', function (Request $request) {
     return redirect('/payment')
         ->with('success', 'Pembayaran berhasil! Tiket Anda telah dipesan.');
 });
+
+
+Route::post('/set-location', function (Request $request) {
+    session(['location' => $request->location]);
+    return back();
+});
+
+
+Route::view('/tiket','tiket',[
+    'movie' => 'Interstellar',
+    'date' => 'Thursday, 4 May',
+    'time' => '20:00',
+    'location' => 'Mall Taman Anggrek',
+    'seat' => 'A1', 'A2',
+    'code' => '61400'
+]);
+
+
+
+
 

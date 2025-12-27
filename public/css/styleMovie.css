@@ -298,9 +298,10 @@ body {
 }
 
 .mall-card.active{
-  background:#3b82f6;   
+  background:#3b82f6;       
   border-color:#3b82f6;
-  box-shadow:none;      
+  box-shadow:none;
+  transform:none;
 }
 
 .mall-title{
