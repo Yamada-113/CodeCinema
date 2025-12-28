@@ -47,7 +47,7 @@
   <h3>Select The Cinema Location</h3>
 
   <div class="mall-list">
-
+    
     <div class="mall-card">
       <span class="mall-title">Mall Taman Anggrek</span>
       <span class="mall-city">Jakarta</span>
@@ -95,6 +95,14 @@
   </div>
 </div>
 
+<div class="studio-wrapper">
+  <div class="studio-list">
+    <button class="studio active">REGULAR</button>
+    <button class="studio">The Premiere</button>
+    <button class="studio">IMAX</button>
+  </div>
+</div>
+
     <!-- TIME -->
     <section class="time">
       <h3>Show Time</h3>
@@ -114,40 +122,50 @@
     <div class="screen">SCREEN</div>
 
     <!-- SEATS -->
-@php
-$rows = 8;        //FYI: INI BLM FINAL (bakal di implementasi ulang pake DB proses random cukup 1x dan simpan)
-@endphp
-<!-- It's not flexible it just to make the point that it's taken reeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee -->
 <div class="seats">
-@for ($r = 0; $r < $rows; $r++)
 
-  @php
-    $rowLetter = chr(72 - $r);
-    $taken = collect(range(1,16))->random(rand(3,5))->toArray();
-    $seat = 1;
-  @endphp
+@foreach($seats as $rowLetter => $rowSeats)
+  @php $index = 0; @endphp
 
+  {{-- LABEL BARIS KIRI --}}
   <div class="row-label">{{ $rowLetter }}</div>
 
-  @for ($i = 0; $i < 4; $i++)
-    <div class="seat {{ in_array($seat++, $taken) ? 'taken' : '' }}"></div>
+  {{-- LEFT --}}
+  @for($i = 0; $i < 4; $i++)
+    @php $seat = $rowSeats[$index++] ?? null; @endphp
+    <div class="seat {{ $seat && $seat->status === 'taken' ? 'taken' : '' }}"
+         data-id="{{ $seat->id ?? '' }}">
+      {{ $rowLetter }}{{ $seat->nomor_kursi ?? '' }}
+    </div>
   @endfor
 
   <div class="aisle"></div>
 
-  @for ($i = 0; $i < 8; $i++)
-    <div class="seat {{ in_array($seat++, $taken) ? 'taken' : '' }}"></div>
+  {{-- CENTER --}}
+  @for($i = 0; $i < 8; $i++)
+    @php $seat = $rowSeats[$index++] ?? null; @endphp
+    <div class="seat {{ $seat && $seat->status === 'taken' ? 'taken' : '' }}"
+         data-id="{{ $seat->id ?? '' }}">
+      {{ $rowLetter }}{{ $seat->nomor_kursi ?? '' }}
+    </div>
   @endfor
 
   <div class="aisle"></div>
 
-  @for ($i = 0; $i < 4; $i++)
-    <div class="seat {{ in_array($seat++, $taken) ? 'taken' : '' }}"></div>
+  {{-- RIGHT --}}
+  @for($i = 0; $i < 4; $i++)
+    @php $seat = $rowSeats[$index++] ?? null; @endphp
+    <div class="seat {{ $seat && $seat->status === 'taken' ? 'taken' : '' }}"
+         data-id="{{ $seat->id ?? '' }}">
+      {{ $rowLetter }}{{ $seat->nomor_kursi ?? '' }}
+    </div>
   @endfor
 
+  {{-- LABEL BARIS KANAN --}}
   <div class="row-label">{{ $rowLetter }}</div>
 
-@endfor
+@endforeach
+
 </div>
 
     <!-- STATUS -->

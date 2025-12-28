@@ -5,11 +5,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\SeatsController;
 use Illuminate\Http\Request;
 
 Route::get('/home', [HomeController::class, 'index']);
 Route::get('/homeAdmin', [HomeController::class, 'admin']);
-Route::get('/movieDetails', [MovieController::class, 'show']);
+// Route::get('/movieDetails', [MovieController::class, 'show']);
+Route::get('/movieDetails/{studioId}', [MovieController::class, 'seat']);
 Route::get('/register', [LoginController::class, 'viewRegister']);
 Route::get('/login', [LoginController::class, 'viewLogin']);
 Route::post('/register', [LoginController::class, 'register']);
