@@ -4,18 +4,19 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LoginController;
 use Illuminate\Http\Request;
 
 Route::get('/home', [HomeController::class, 'index']);
 Route::get('/homeAdmin', [HomeController::class, 'admin']);
 Route::get('/movieDetails', [MovieController::class, 'show']);
-//Route::get('/movieDetails/taken', [MovieController::class, 'taken']);
+Route::get('/register', [LoginController::class, 'viewRegister']);
+Route::get('/login', [LoginController::class, 'viewLogin']);
+Route::post('/register', [LoginController::class, 'register']);
+Route::post('/login', [LoginController::class, 'login']);
 
-Route::get('/login', function () {
-    return view('login');
-});
-Route::get('/register', function () {
-    return view('register');
+Route::get('/Admin/homeAdmin', function () {
+    return view('Admin.homeAdmin');
 });
 
 Route::get('/payment', function () {

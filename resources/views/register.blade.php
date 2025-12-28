@@ -20,28 +20,29 @@
     <h2>Welcome to CodeCinema</h2>
     <p class="subtitle">Register to have a full experience</p>
 
-    <form>
+    <form action="/register" method="POST">
+      {{ csrf_field() }}
       <div class="input-group">
-        <input type="text" required>
+        <input type="text" name="nama"required>
         <label>Username</label>
       </div>
 
       <div class="input-group">
-        <input type="email" required>
+        <input type="email" name="email" required>
         <label>Email</label>
       </div>
 
       <div class="input-group">
-        <input type="text" required>
+        <input type="text" name="no_hp" required>
         <label>No.Hp</label>
       </div>
 
       <div class="input-group">
-        <input type="password" required>
+        <input type="password" name="password" required>
         <label>Password</label>
       </div>
 
-    <a href="/login" class="login-btn">Register</a>
+    <button type="submit" class="login-btn">Register</button>
 
       <div class="extra">
         <span>Already have an account?</span>

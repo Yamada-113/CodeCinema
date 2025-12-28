@@ -10,6 +10,6 @@ class HomeController extends Controller
     }
     
     public function admin() {
-    return view('homeAdmin'); 
+    return view('/Admin/homeAdmin'); 
     }
 }

@@ -20,18 +20,25 @@
     <h2>Welcome Back</h2>
     <p class="subtitle">Login to continue</p>
 
-    <form>
+    <form action="/login" method="POST">
+      {{ csrf_field() }}
+      
       <div class="input-group">
-        <input type="email" required>
+        
+        <input type="email" name="email" value="{{ old('email') }}" required>
         <label>Email</label>
       </div>
-
+      
       <div class="input-group">
-        <input type="password" required>
+        <input type="password" name="password" required>
         <label>Password</label>
       </div>
 
-    <a href="/home" class="login-btn">Login</a>
+      @error('login')
+        <small class="error-text">{{ $message }}</small>
+      @enderror
+
+    <button type="submit" class="login-btn">Login</button>
 
       <div class="extra">
         <span>Don’t have an account?</span>
