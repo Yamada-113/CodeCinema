@@ -9,12 +9,45 @@
 <body>
 
 <header class="topbar">
-  <h1>CodeCinema</h1>
+  <div class="logo-wrapper">
+    <img src="{{ asset('foto/Logo CodeCinema.png') }}" alt="Logo" class="cinema-logo">
+    <h1>CodeCinema</h1>
+  </div>
   <div class="header-right">
     <a href="/login" class="btn-logout">Logout</a>
     <span class="location">Jakarta ▼</span>
   </div>
 </header>
+
+<header class="topbar">
+  </header>
+
+<div class="promo-container">
+    <div class="promo-wrapper">
+        <div class="promo-card">
+            <img src="https://web3.21cineplex.com/mobile-banner/XXI_HEADLINE%20APPS.jpg" alt="Promo 1">
+        </div>
+        <div class="promo-card">
+            <img src="https://web3.21cineplex.com/mobile-banner/dusun%20mayit%20Headline%20apps_840%20x%20400%20px.jpg" alt="Promo 2">
+        </div>
+        <div class="promo-card">
+            <img src="https://web3.21cineplex.com/evoucher/WA2025120917005475762151912801_banner.jpg?sn=460962021" alt="Promo 3">
+        </div>
+        <div class="promo-card">
+            <img src="https://web3.21cineplex.com/mobile-banner/PM1283_INTL_EA_Masters_820x360px_UD_UR_V1_R2.jpg" alt="Promo 4">
+        </div>
+        <div class="promo-card">
+            <img src="https://web3.21cineplex.com/mobile-banner/comic%208%20840%20(1).jpg" alt="Promo 5">
+        </div>
+        <div class="promo-card">
+            <img src="https://web3.21cineplex.com/mobile-banner/Janur%20Ireng%20-%20Web%20Banner%20(XXI%20-%20840x400px-max.100kb).jpg" alt="Promo 6">
+        </div>
+    </div>
+</div>
+
+<section class="section">
+  </section>
+
 
 <section class="section">
   <h2>Now Playing</h2>
