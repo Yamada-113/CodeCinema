@@ -122,7 +122,7 @@ $rows = 8;        //FYI: INI BLM FINAL (bakal di implementasi ulang pake DB pros
 @for ($r = 0; $r < $rows; $r++)
 
   @php
-    $rowLetter = chr(65 + $r);
+    $rowLetter = chr(72 - $r);
     $taken = collect(range(1,16))->random(rand(3,5))->toArray();
     $seat = 1;
   @endphp
