@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Login | CodeCinema</title>
+  <title>Register | CodeCinema</title>
   <link rel="stylesheet" href="{{ asset('css/styleLogin.css') }}">
 </head>
 <body>
