@@ -12,108 +12,129 @@
 
   <!-- LEFT : MOVIE INFO -->
   <aside class="movie-info">
-    <img src="https://i.pinimg.com/1200x/f0/0e/f4/f00ef4ef28062a3ffe32c80cfa039c86.jpg" class="poster">
+    <img src="{{ $movie->poster ?? 'https://i.pinimg.com/1200x/f0/0e/f4/f00ef4ef28062a3ffe32c80cfa039c86.jpg' }}" class="poster">
 
-    <h2>Interstellar</h2>
-    <p class="meta">106 minutes • PG-13</p>
+    <h2>{{ $movie->judul ?? 'Unknown' }}</h2>
+    <p class="meta">{{ $movie->durasi ?? '-' }} minutes • {{ $movie->rating ?? '-' }}</p>
 
     <div class="detail">
-      <p><strong>Director</strong><br>Rupert Sanders</p>
-      <p><strong>Genre</strong><br>Action, Sci-Fi</p>
-      <p><strong>Description</strong><br>
-      Film ini bercerita tentang sekelompok astronaut yang menuju lubang cacing (worm hole) 
-      dekat Saturnus untuk mencari planet baru yang mampu merumahi manusia, ditengah era distopia. 
-      Naskah aslinya ditulis Jonathan pada tahun 2007, kemudian dilanjuti Christopher dan Jonathan.
-    </p>
+        <p><strong>Director</strong><br>{{ $movie->direktor ?? '-' }}</p>
+        <p><strong>Genre</strong><br>{{ $movie->genre ?? '-' }}</p>
+        <p><strong>Description</strong><br>{{ $movie->deskripsi ?? '-' }}</p>
     </div>
 
     <button class="play-btn">▶ Trailer</button>
-  </aside>
+</aside>
 
   <!-- RIGHT : BOOKING -->
   <main class="booking">
 
     <!-- STEPS -->
-    <div class="steps">
-      <!-- <span class="active">01 Choose Movie</span> -->
-      <span class="active">01 Choose Time, Date, & Seats</span>
-      <span>02 Payment</span>
-      <span>03 Complete</span>
-    </div>
+<div class="steps">
+  <span class="{{ $cinemaId ? 'active' : '' }}">Lokasi</span>
+  <span class="{{ $studioId ? 'active' : '' }}">Studio</span>
+  <span class="{{ $date ? 'active' : '' }}">Tanggal</span>
+  <span class="{{ request('jam') ? 'active' : '' }}">Jam</span>
+  <span class="{{ $seats ? 'active' : '' }}">Kursi</span>
+</div>
+
 
     <!-- LOCATION -->
     <br>
     <section class="mall">
   <h3>Select The Cinema Location</h3>
 
-  <div class="mall-list">
-    
-    <div class="mall-card">
-      <span class="mall-title">Mall Taman Anggrek</span>
-      <span class="mall-city">Jakarta</span>
-    </div>
-
-    <div class="mall-card active">
-      <span class="mall-title">Grand Indonesia</span>
-      <span class="mall-city">Jakarta</span>
-    </div>
-
-    <div class="mall-card">
-      <span class="mall-title">Mall Of Indonesia</span>
-      <span class="mall-city">Jakarta</span>
-    </div>
-
-    <div class="mall-card">
-      <span class="mall-title">Green Pramuka Mall</span>
-      <span class="mall-city">Jakarta</span>
-    </div>
-    </form>
-
-  </div>
-  </section>
-
-<div class="calendar">
-  @php
-    $calendar = [
-      ['day'=>'MON','date'=>1],
-      ['day'=>'TUE','date'=>2],
-      ['day'=>'WED','date'=>3],
-      ['day'=>'THU','date'=>4],
-      ['day'=>'FRI','date'=>5],
-      ['day'=>'SAT','date'=>6],
-      ['day'=>'SUN','date'=>7],
-    ];
-  @endphp
-
-  <div class="calendar-grid">
-    @foreach ($calendar as $c)
-      <div class="date-box {{ $c['date'] == 4 ? 'active' : '' }}">
-        <span class="day">{{ $c['day'] }}</span>
-        <span class="date">{{ $c['date'] }}</span>
-      </div>
-    @endforeach
-  </div>
+<div class="mall-list">
+  @foreach($cinemas as $cinema)
+    <a
+      href="?{{ http_build_query(array_filter([
+          'id_film'   => $filmId,
+          'id_lokasi' => $cinema->id_lokasi,
+          'id_studio' => null,   // reset studio saat ganti lokasi
+          'date'      => null    // reset tanggal
+      ])) }}"
+      class="mall-card {{ (int)$cinema->id_lokasi === (int)$cinemaId ? 'active' : '' }}">
+      
+      <span class="mall-title">{{ $cinema->nama_lokasi }}</span>
+      <span class="mall-city">{{ $cinema->kota }}</span>
+    </a>
+  @endforeach
 </div>
+
+<h3>Studio</h3>
 
 <div class="studio-wrapper">
   <div class="studio-list">
-    <button class="studio active">REGULAR</button>
-    <button class="studio">The Premiere</button>
-    <button class="studio">IMAX</button>
+
+    @if(!$cinemaId)
+      {{-- PLACEHOLDER --}}
+      <div class="studio disabled">Regular</div>
+      <div class="studio disabled">The Premiere</div>
+      <div class="studio disabled">IMAX</div>
+
+    @else
+      @foreach ($studios as $studio)
+        <a
+          class="studio {{ $studioId == $studio->id_studio ? 'active' : '' }}"
+          href="?{{ http_build_query(array_filter([
+              'id_film'   => $filmId,
+              'id_lokasi' => $cinemaId,
+              'id_studio' => $studio->id_studio,
+              'date'      => null,
+              'jam'       => null
+          ])) }}">
+          {{ $studio->nama_studio }}
+        </a>
+      @endforeach
+    @endif
+
   </div>
 </div>
 
-    <!-- TIME -->
-    <section class="time">
-      <h3>Show Time</h3>
-      <div class="times">
-        <button>10:00 | Rp50.000</button>
-        <button>12:30 | Rp50.000</button>
-        <button>15:30 | Rp50.000</button>
-        <button class="active">20:00 | Rp50.000</button>
-        <button>22:30 | Rp65.000</button>
+
+
+<h3>Date</h3>
+
+<div class="calendar-grid">
+  @forelse ($calendar as $c)
+    <a
+      class="date-box {{ !$studioId ? 'disabled' : '' }} {{ $date === $c['full_date'] ? 'active' : '' }}"
+      href="{{ $studioId ? '?id_lokasi='.$cinemaId.'&id_studio='.$studioId.'&date='.$c['full_date'] : '#' }}">
+      <span class="day">{{ $c['day'] }}</span>
+      <span class="date">{{ $c['date'] }}</span>
+    </a>
+  @empty
+    {{-- PLACEHOLDER --}}
+    @for($i = 0; $i < 7; $i++)
+      <div class="date-box disabled">
+        <span class="day">---</span>
+        <span class="date">--</span>
       </div>
-    </section>
+    @endfor
+  @endforelse
+</div>
+
+
+
+    <!-- TIME -->
+<h3>Show Time</h3>
+
+<div class="times">
+  @forelse($times as $t)
+    <a
+      class="time-box {{ !$date ? 'disabled' : '' }} {{ request('jam') === $t->jam_tayang ? 'active' : '' }}"
+      href="{{ ($studioId && $date) ? '?id_lokasi='.$cinemaId.'&id_studio='.$studioId.'&date='.$date.'&jam='.$t->jam_tayang : '#' }}">
+      {{ $t->jam_tayang }} | Rp{{ number_format($t->harga_tiket) }}
+    </a>
+  @empty
+    {{-- PLACEHOLDER --}}
+    @for($i = 0; $i < 4; $i++)
+      <div class="time-box disabled">--:-- | Rp---</div>
+    @endfor
+  @endforelse
+</div>
+
+
 
     <!-- SCREEN -->
     <div class="screen-wrapper">
@@ -122,62 +143,82 @@
     <div class="screen">SCREEN</div>
 
     <!-- SEATS -->
-<div class="seats">
+<form action="/payment" method="POST">
+   {{ csrf_field() }}
+  <!-- Kirim query lain sebagai hidden -->
+  <input type="hidden" name="id_lokasi" value="{{ request('id_lokasi') }}">
+  <input type="hidden" name="id_studio" value="{{ request('id_studio') }}">
+  <input type="hidden" name="date" value="{{ request('date') }}">
+  <input type="hidden" name="jam" value="{{ request('jam') }}">
 
-@foreach($seats as $rowLetter => $rowSeats)
-  @php $index = 0; @endphp
+  <div class="seats {{ !request('jam') ? 'locked' : '' }}">
+    @foreach($seats as $rowLetter => $rowSeats)
+      @php $index = 0; @endphp
 
-  {{-- LABEL BARIS KIRI --}}
-  <div class="row-label">{{ $rowLetter }}</div>
+      {{-- LABEL BARIS KIRI --}}
+      <div class="row-label">{{ $rowLetter }}</div>
 
-  {{-- LEFT --}}
-  @for($i = 0; $i < 4; $i++)
-    @php $seat = $rowSeats[$index++] ?? null; @endphp
-    <div class="seat {{ $seat && $seat->status === 'taken' ? 'taken' : '' }}"
-         data-id="{{ $seat->id ?? '' }}">
-      {{ $rowLetter }}{{ $seat->nomor_kursi ?? '' }}
-    </div>
-  @endfor
+      {{-- LEFT --}}
+      @for($i = 0; $i < 4; $i++)
+        @php $seat = $rowSeats[$index++] ?? null; @endphp
+        @if($seat)
+          @php $seatId = 'seat-'.$seat->id_kursi; @endphp
+          <input type="checkbox" id="{{ $seatId }}" name="seats[]" value="{{ $seat->id_kursi }}"
+                 {{ $seat->status==='taken' || !request('jam') ? 'disabled' : '' }} style="display:none;">
+          <label for="{{ $seatId }}" class="seat {{ $seat->status==='taken' ? 'taken' : '' }}">
+            {{ $rowLetter }}{{ $seat->nomor_kursi }}
+          </label>
+        @endif
+      @endfor
 
-  <div class="aisle"></div>
+      <div class="aisle"></div>
 
-  {{-- CENTER --}}
-  @for($i = 0; $i < 8; $i++)
-    @php $seat = $rowSeats[$index++] ?? null; @endphp
-    <div class="seat {{ $seat && $seat->status === 'taken' ? 'taken' : '' }}"
-         data-id="{{ $seat->id ?? '' }}">
-      {{ $rowLetter }}{{ $seat->nomor_kursi ?? '' }}
-    </div>
-  @endfor
+      {{-- CENTER --}}
+      @for($i = 0; $i < 8; $i++)
+        @php $seat = $rowSeats[$index++] ?? null; @endphp
+        @if($seat)
+          @php $seatId = 'seat-'.$seat->id_kursi; @endphp
+          <input type="checkbox" id="{{ $seatId }}" name="seats[]" value="{{ $seat->id_kursi }}"
+                 {{ $seat->status==='taken' || !request('jam') ? 'disabled' : '' }} style="display:none;">
+          <label for="{{ $seatId }}" class="seat {{ $seat->status==='taken' ? 'taken' : '' }}">
+            {{ $rowLetter }}{{ $seat->nomor_kursi }}
+          </label>
+        @endif
+      @endfor
 
-  <div class="aisle"></div>
+      <div class="aisle"></div>
 
-  {{-- RIGHT --}}
-  @for($i = 0; $i < 4; $i++)
-    @php $seat = $rowSeats[$index++] ?? null; @endphp
-    <div class="seat {{ $seat && $seat->status === 'taken' ? 'taken' : '' }}"
-         data-id="{{ $seat->id ?? '' }}">
-      {{ $rowLetter }}{{ $seat->nomor_kursi ?? '' }}
-    </div>
-  @endfor
+      {{-- RIGHT --}}
+      @for($i = 0; $i < 4; $i++)
+        @php $seat = $rowSeats[$index++] ?? null; @endphp
+        @if($seat)
+          @php $seatId = 'seat-'.$seat->id_kursi; @endphp
+          <input type="checkbox" id="{{ $seatId }}" name="seats[]" value="{{ $seat->id_kursi }}"
+                 {{ $seat->status==='taken' || !request('jam') ? 'disabled' : '' }} style="display:none;">
+          <label for="{{ $seatId }}" class="seat {{ $seat->status==='taken' ? 'taken' : '' }}">
+            {{ $rowLetter }}{{ $seat->nomor_kursi }}
+          </label>
+        @endif
+      @endfor
 
-  {{-- LABEL BARIS KANAN --}}
-  <div class="row-label">{{ $rowLetter }}</div>
+      {{-- LABEL BARIS KANAN --}}
+      <div class="row-label">{{ $rowLetter }}</div>
+    @endforeach
+  </div>
 
-@endforeach
+  <!-- STATUS -->
+  <div class="status">
+    <span><i class="seat"></i> Available</span>
+    <span><i class="seat selected"></i> Selected</span>
+    <span><i class="seat taken"></i> Taken</span>
+  </div>
 
-</div>
-
-    <!-- STATUS -->
-    <div class="status">
-      <span><i class="seat"></i> Available</span>
-      <span><i class="seat selected"></i> Selected</span>
-      <span><i class="seat taken"></i> Taken</span>
-    </div>
-
-    <a href="/payment" class="continue">Continue</a>
-    <a href="/home" class="back">Back</a>
-
+  <div class="form-footer">
+        <a href="/home" class="back">Back</a>
+        <button type="submit" class="continue">Continue</button>
+  </div>
+    
+</form>
   </main>
 </div>
 
@@ -188,28 +229,6 @@
     });
   });
 </script>
-
-//
-<script>
-document.querySelectorAll('.mall-card').forEach(card => {
-
-    card.addEventListener('click', () => {
-
-        document.querySelectorAll('.mall-card')
-            .forEach(c => c.classList.remove('active'));
-
-        card.classList.add('active');
-
-        const location = card.getAttribute('data-location');
-
-        document.getElementById('locationInput').value = location;
-
-        document.getElementById('locForm').submit();
-    });
-
-});
-</script>
-
 
 </body>
 </html>

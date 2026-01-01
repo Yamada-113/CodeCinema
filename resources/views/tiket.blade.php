@@ -6,57 +6,70 @@
 </head>
 <body>
 
-<div class="ticket-wrapper">
+<div class="ticket-container">
 
-    
-    <div class="ticket-card">
-        
-        <div class="qr-section">
-            <img src="https://i.pinimg.com/1200x/f0/0e/f4/f00ef4ef28062a3ffe32c80cfa039c86.jpg" class="poster">
+    <div class="ticket">
+
+    <div 
+        class="ticket-poster"
+        style="background-image: url('{{ $ticket->poster_film ?? 'https://i.pinimg.com/1200x/f0/0e/f4/f00ef4ef28062a3ffe32c80cfa039c86.jpg' }}')">
+    </div>
+
+        <div class="ticket-info">
+            <h1 class="movie-title">{{ $ticket->judul }}</h1>
+
+            <div class="info-row">
+                <span>Date</span>
+                <strong>{{ $ticket->tanggal }}</strong>
+            </div>
+
+            <div class="info-row">
+                <span>Time</span>
+                <strong>{{ $ticket->jam_tayang }}</strong>
+            </div>
+
+            <div class="info-row">
+                <span>Location</span>
+                <strong>{{ $ticket->nama_lokasi }}</strong>
+            </div>
+
+            <div class="info-row">
+                <span>Studio</span>
+                <strong>{{ $ticket->nama_studio }}</strong>
+            </div>
+
+        <div class="info-row">
+            <span>Seats</span>
+            <strong>
+                @foreach($seats as $seat)
+                    {{ $seat->baris_kursi }}{{ $seat->nomor_kursi }}@if(!$loop->last), @endif
+                @endforeach
+            </strong>
         </div>
-        
-        <div class="detail-section">
-            <h2 class="title">E-Ticket</h2>
 
-            <p class="movie">{{ $movie ?? 'Movie Title' }}</p>
-
-            <div class="row">
-                <span class="left">Date</span>
-                <span class="right">{{ $date ?? '-' }}</span>
+            <div class="order-code">
+                ORDER CODE<br>
+                <strong>{{ $ticket->id_pembayaran }}</strong>
             </div>
+        </div>
 
-            <div class="row">
-                <span class="left">Show Time</span>
-                <span class="right">{{ $time ?? '-' }}</span>
-            </div>
+        <div class="perforation"></div>
 
-            <div class="row">
-                <span class="left">Location</span>
-                <span class="right">{{ $location ?? '-' }}</span>
-            </div>
+        <div class="ticket-qr">
+            <img 
+                src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data={{ $ticket->id_pembayaran }}"
+                alt="QR Code">
 
-            <div class="row">
-                <span class="left">Seats</span>
-                <span class="right">{{ $seat ?? '-' }}, {{ $seat ?? '-' }}</span>
-            </div>
-
-            <div class="row">
-                <span class="left">Order Code</span>
-                <span class="right">{{ $code ?? rand(10000,99999) }}</span>
-            </div>
-
-            <br>
-            <div class="qr-ticket">
-                <img 
-                    class="qr-img"
-                    src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data={{ $code ?? 'TICKET' }}"
-                >
-            </div>
-
+            <p>Scan at entrance</p>
         </div>
 
     </div>
-
+    <div class="back-home">
+    <a href= "/home" class="btn-home">
+        Kembali
+    </a>
+    </div>
+    
 </div>
 
 </body>

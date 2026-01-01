@@ -1,91 +1,165 @@
-
-
-.title{
-    text-align:center;
-    font-size:24px;
-    font-weight:bold;
-    margin-top:25px;
+body {
+    background: #0f1115;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
-body{
-    background:#000;
-    font-family: 'Poppins', Arial, Helvetica, sans-serif;
-    color:rgb(0, 0, 0);
-    margin:0;
+.ticket-container {
+    width: 980px;
 }
 
-.detail-section{
-    font-family: 'Poppins', sans-serif;
+/* CARD */
+.ticket {
+    display: flex;
+    height: 400px;
+    background: linear-gradient(
+    to left,
+    rgba(2, 15, 58, 0.26),
+    rgb(6, 7, 10)
+    );
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 40px 90px rgba(0,0,0,.6);
+}
+
+/* POSTER */
+.ticket-poster {
+    width: 260px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.ticket-poster::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to right,
+       rgba(6, 7, 10, 0.288), 
+        rgba(6, 7, 10, 0.349)
+    );
+}
+
+/* INFO */
+.ticket-info {
+    flex: 1 ;
+    padding: 32px 36px;
+    color: #e5e7eb;
+}
+
+.movie-title {
+    font-size: 26px;
     font-weight: 700;
+    margin-bottom: 22px;
+    color: #f9fafb;
 }
 
-.movie{
-    font-family: 'Poppins', sans-serif;
-    font-weight: 700;
-    font-size: 20px;
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 28px;
 }
 
-/* kartu e-ticket */
-.ticket-card{
-    width: 750px;
-    margin:30px auto;
-    background:#0f0f0f;
-    border-radius:18px;
-    box-shadow:0 10px 30px rgba(255,255,255,.08);
-    padding:25px 35px;
-    display:grid;
-    grid-template-columns: 1fr 1.4fr;
-    gap:25px;
-    color:white;
+.info-grid span {
+    font-size: 11px;
+    letter-spacing: 1.4px;
+    color: #9ca3af;
 }
 
-/* POSTER FILM */
-.poster {
-    max-width: 350px;  
-    height: auto;
+.info-grid p {
+    margin-top: 4px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.info-grid .full {
+    grid-column: span 2;
+}
+
+.order-code {
+    margin-top: 100px;
+    font-size: 15px;
+    letter-spacing: 1.6px;
+    color: #6366f1;
+}
+
+/* PERFORATION */
+.perforation {
+    width: 34px;
+    margin-left: -16px;
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.644),
+            rgba(255, 255, 255, 0.644) 6px,
+            transparent 6px,
+            transparent 14px
+        );
+    position: relative;
+}
+
+.perforation::before,
+.perforation::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 22px;
+    height: 22px;
+    background: #0f1115;
+    border-radius: 50%;
+}
+
+.perforation::before { top: -11px; }
+.perforation::after { bottom: -11px; }
+
+/* QR */
+.ticket-qr {
+    width: 200px;
+    background: #02061763;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.ticket-qr img {
+    width: 130px;
+    background: #fff;
+    padding: 8px;
     border-radius: 12px;
-    display: block;
-    margin: 0 auto;     
 }
 
-
-/* QR CODE BOX */
-.qr-box{
-    width:30px;
-    height:30px;
-    border:2px dashed #aaa;
-    border-radius:10px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    margin-top:15px;
-    font-size:12px;
-    text-align:center;
+.ticket-qr p {
+    font-size: 11px;
+    color: #9ca3af;
 }
 
-/* teks kanan */
-.label{
-    font-weight:bold;
+.back-home {
+    text-align: center;
+    margin-top: 30px;
 }
 
-.row{
-    display:flex;
-    justify-content:space-between;
-    border-bottom:1px solid #333;
-    padding:6px 0;
+.btn-home {
+    display: inline-block;
+    padding: 12px 28px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #6366f1, #3b82f6);
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: .5px;
+    text-decoration: none;
+    box-shadow: 0 10px 25px rgba(59,130,246,.35);
+    transition: transform .25s ease, box-shadow .25s ease;
 }
 
-.qr-ticket{
-    text-align:center;
-    margin-top: 15px;
-}
-
-.qr-img{
-    width: 160px;
-    height: 160px;
-}
-
-.qr-text{
-    font-family: 'Poppins', sans-serif;
-    font-weight: 700;
+.btn-home:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 35px rgba(59,130,246,.45);
 }
