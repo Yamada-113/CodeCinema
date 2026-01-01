@@ -56,92 +56,20 @@
 <section class="section">
   <h2>Now Playing</h2>
   <div class="movie-row">
-    
+    @foreach($movies as $movie)
     <div class="movie-card">
-      <img src="https://i.pinimg.com/1200x/f0/0e/f4/f00ef4ef28062a3ffe32c80cfa039c86.jpg" alt="Interstellar">
-      <div class="movie-info">
-        <p class="title">Interstellar</p>
-        <div class="meta">
-          <span class="age">13+</span>
-          <span class="duration">169 min</span>
+        <img src="{{ $movie->poster_film }}" alt="{{ $movie->judul }}">
+        <div class="movie-info">
+            <p class="title">{{ $movie->judul }}</p>
+            <div class="meta">
+                <span class="age">{{ $movie->rating }}</span>
+                <span class="duration">{{ $movie->durasi }} min</span>
+            </div>
+            <a href="{{ route('movie.details', $movie->id_film) }}" class="watch">Watch</a>
         </div>
-        <a href="/movieDetails" class="watch">Watch</a>
-      </div>
     </div>
-
-    <div class="movie-card">
-      <img src="https://i.pinimg.com/1200x/96/dc/fb/96dcfbe4a7b35070f73fd81df4a8737a.jpg" alt="Howl Moving Castle">
-      <div class="movie-info">
-        <p class="title">Howl Moving Castle</p>
-        <div class="meta">
-          <span class="age">7+</span>
-          <span class="duration">119 min</span>
-        </div>
-        <a href="/movieDetails" class="watch">Watch</a>
-      </div>
-    </div>
-
-    <div class="movie-card">
-      <img src="https://i.pinimg.com/1200x/f2/85/45/f28545a7aa8b7a65388853902d600ddf.jpg" alt="Us">
-      <div class="movie-info">
-        <p class="title">Us</p>
-        <div class="meta">
-          <span class="age">17+</span>
-          <span class="duration">116 min</span>
-        </div>
-        <a href="/movieDetails" class="watch">Watch</a>
-      </div>
-    </div>
-
-    <div class="movie-card">
-      <img src="https://i.pinimg.com/1200x/3d/5f/f7/3d5ff7aa662986869d31cba4d141dafd.jpg" alt="Talk To Me">
-      <div class="movie-info">
-        <p class="title">Talk To Me</p>
-        <div class="meta">
-          <span class="age">17+</span>
-          <span class="duration">95 min</span>
-        </div>
-        <a href="/movieDetails" class="watch">Watch</a>
-      </div>
-    </div>
-
-    <div class="movie-card">
-      <img src="https://i.pinimg.com/1200x/c7/56/8b/c7568bd112255cab2a581a53893d613b.jpg" alt="Dear Zindagi">
-      <div class="movie-info">
-        <p class="title">Dear Zindagi</p>
-        <div class="meta">
-          <span class="age">17+</span>
-          <span class="duration">95 min</span>
-        </div>
-        <a href="/movieDetails" class="watch">Watch</a>
-      </div>
-    </div>
-
-    <div class="movie-card">
-      <img src="https://i.pinimg.com/1200x/20/d1/35/20d135bac134cc0ea741de4afabec9cd.jpg" alt="Zero">
-      <div class="movie-info">
-        <p class="title">Zero</p>
-        <div class="meta">
-          <span class="age">17+</span>
-          <span class="duration">95 min</span>
-        </div>
-        <a href="/movieDetails" class="watch">Watch</a>
-      </div>
-    </div>
-
-    <div class="movie-card">
-      <img src="https://i.pinimg.com/1200x/11/d4/3b/11d43b2bf9559d162af8fe36663c770a.jpg" alt="Sumala">
-      <div class="movie-info">
-        <p class="title">Sumala</p>
-        <div class="meta">
-          <span class="age">17+</span>
-          <span class="duration">95 min</span>
-        </div>
-        <a href="/movieDetails" class="watch">Watch</a>
-      </div>
-    </div>
-
-  </div>
+    @endforeach
+</div>   
 </section>
 
 <section class="section">

@@ -25,12 +25,12 @@ class MovieController extends Controller
         return view('movieDetails', compact('seats'));
     }
 
-    public function booking(Request $request)
+    public function booking(Request $request, $id)
     {
     $cinemas   = DB::table('tabel_lokasi')->get();
     $cinemaId  = $request->query('id_lokasi');
     $studioId  = $request->query('id_studio');
-    $filmId    = $request->query('id_film') ?? 1;
+    $filmId    = $id;
     $date      = $request->query('date');
 
     //FILM
@@ -58,34 +58,33 @@ class MovieController extends Controller
 
     // TANGGAL BERDASARKAN JADWAL
     $calendar = [];
-    if ($filmId && $studioId) {
-        $dates = DB::table('jadwal_tayang')
-            ->where('id_film', $filmId)
-            ->where('id_studio', $studioId)
-            ->select('tanggal')
-            ->distinct()
-            ->orderBy('tanggal')
-            ->pluck('tanggal');
-
-        foreach ($dates as $tgl) {
-            $d = Carbon::parse($tgl);
-            $calendar[] = [
-                'full_date' => $d->toDateString(),
-                'day'       => strtoupper($d->format('D')),
-                'date'      => $d->format('d'),
-            ];
-        }
+    for ($i = 0; $i < 7; $i++) {
+    $dateObj = now()->addDays($i);
+    $calendar[] = [
+        'full_date' => $dateObj->format('Y-m-d'),
+        'day'       => $dateObj->format('D'), 
+        'date'      => $dateObj->format('d'), 
+        ];
     }
-
     // JAM + HARGA
-    $times = [];
-    if ($filmId && $studioId && $date) {
+        
+    $times = collect(); // Default kosong agar tidak error saat baru buka halaman
+
+    // Kita hanya cari jadwal jika user SUDAH memilih Studio
+    if ($studioId) {
         $times = DB::table('jadwal_tayang')
-            ->where('id_film', $filmId)
-            ->where('id_studio', $studioId)
-            ->where('tanggal', $date)
-            ->orderBy('jam_tayang')
-            ->get();
+        ->where('id_film', $filmId)
+        ->where('id_studio', $studioId) // Jadwal di tabel ini hanya pakai id_studio
+        ->where('tanggal', $date)      // Pastikan nama kolomnya 'tanggal' sesuai phpMyAdmin
+        ->get();
+    }
+    if ($times->isEmpty()) {
+    $times = collect([
+        (object)['jam_tayang' => '13:00', 'harga_tiket' => 50000],
+        (object)['jam_tayang' => '16:00', 'harga_tiket' => 50000],
+        (object)['jam_tayang' => '19:00', 'harga_tiket' => 55000],
+        (object)['jam_tayang' => '21:00', 'harga_tiket' => 55000],
+        ]);
     }
     
 

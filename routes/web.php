@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 Route::get('/home', [HomeController::class, 'index']);
 Route::get('/homeAdmin', [HomeController::class, 'admin']);
 // Route::get('/movieDetails', [MovieController::class, 'show']);
-Route::get('/movieDetails', [MovieController::class, 'booking']);
+Route::get('/movieDetails/{id}', [MovieController::class, 'booking'])->name('movie.details');
 Route::get(
   '/movie/{film}/{lokasi?}/{studio?}/{date?}/{jam?}',
   [MovieController::class, 'booking']

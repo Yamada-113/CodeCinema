@@ -12,7 +12,7 @@
 
   <!-- LEFT : MOVIE INFO -->
   <aside class="movie-info">
-    <img src="{{ $movie->poster ?? 'https://i.pinimg.com/1200x/f0/0e/f4/f00ef4ef28062a3ffe32c80cfa039c86.jpg' }}" class="poster">
+    <img src="{{ $movie->poster_film }}" alt="{{ $movie->judul }}" class="movie-poster">
 
     <h2>{{ $movie->judul ?? 'Unknown' }}</h2>
     <p class="meta">{{ $movie->durasi ?? '-' }} minutes • {{ $movie->rating ?? '-' }}</p>
