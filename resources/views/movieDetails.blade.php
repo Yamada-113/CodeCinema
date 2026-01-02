@@ -143,7 +143,7 @@
     <div class="screen">SCREEN</div>
 
     <!-- SEATS -->
-<form action="/payment" method="POST">
+<form action="/payment" method="POST" id="bookingForm">
    {{ csrf_field() }}
   <!-- Kirim query lain sebagai hidden -->
   <input type="hidden" name="id_lokasi" value="{{ request('id_lokasi') }}">
@@ -213,6 +213,10 @@
     <span><i class="seat taken"></i> Taken</span>
   </div>
 
+  <div id="seatError" style="display:none; color: red; text-align: center; margin: 10px 0; font-weight: bold;">
+    ⚠️ Pilih minimal 1 kursi sebelum melanjutkan!
+  </div>
+
   <div class="form-footer">
         <a href="/home" class="back">Back</a>
         <button type="submit" class="continue">Continue</button>
@@ -226,7 +230,20 @@
   document.querySelectorAll('.seat:not(.taken)').forEach(seat => {
     seat.addEventListener('click', () => {
       seat.classList.toggle('selected');
+      document.getElementById('seatError').style.display = 'none';
     });
+  });
+
+  document.getElementById('bookingForm').addEventListener('submit', function(e) {
+    const selectedSeats = document.querySelectorAll('input[name="seats[]"]:checked');
+    
+    if (selectedSeats.length === 0) {
+      e.preventDefault();
+      const errorDiv = document.getElementById('seatError');
+      errorDiv.style.display = 'block';
+      errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return false;
+    }
   });
 </script>
 
