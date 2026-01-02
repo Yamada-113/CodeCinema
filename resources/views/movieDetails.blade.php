@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Movie Booking | CodeCinema</title>
   <link rel="stylesheet" href="{{ asset('css/styleMovie.css') }}">
+
 </head>
 <body>
 
@@ -49,8 +50,8 @@
       href="?{{ http_build_query(array_filter([
           'id_film'   => $filmId,
           'id_lokasi' => $cinema->id_lokasi,
-          'id_studio' => null,
-          'date'      => null
+          'id_studio' => null,   // reset studio saat ganti lokasi
+          'date'      => null    // reset tanggal
       ])) }}"
       class="mall-card {{ (int)$cinema->id_lokasi === (int)$cinemaId ? 'active' : '' }}">
       
@@ -212,9 +213,8 @@
     <span><i class="seat taken"></i> Taken</span>
   </div>
 
-  <!-- Error message (hidden by default) -->
   <div id="seatError" style="display:none; color: red; text-align: center; margin: 10px 0; font-weight: bold;">
-    ⚠️ Please select at least 1 seat before continuing!
+    ⚠️ Pilih minimal 1 kursi sebelum melanjutkan!
   </div>
 
   <div class="form-footer">
@@ -227,29 +227,21 @@
 </div>
 
 <script>
-  // Toggle seat selection
   document.querySelectorAll('.seat:not(.taken)').forEach(seat => {
     seat.addEventListener('click', () => {
       seat.classList.toggle('selected');
-      // Hide error when user selects a seat
       document.getElementById('seatError').style.display = 'none';
     });
   });
 
-  // Validate form submission
   document.getElementById('bookingForm').addEventListener('submit', function(e) {
     const selectedSeats = document.querySelectorAll('input[name="seats[]"]:checked');
     
     if (selectedSeats.length === 0) {
-      e.preventDefault(); // Stop form submission
-      
-      // Show error message
+      e.preventDefault();
       const errorDiv = document.getElementById('seatError');
       errorDiv.style.display = 'block';
-      
-      // Scroll to error message
       errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      
       return false;
     }
   });

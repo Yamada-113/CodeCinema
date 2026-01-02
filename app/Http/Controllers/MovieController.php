@@ -56,37 +56,38 @@ class MovieController extends Controller
             ->groupBy('baris_kursi');
     }
 
-    // TANGGAL BERDASARKAN JADWAL
+    // TANGGAL BERDASARKAN JADWAL - HANYA TAMPIL KALAU STUDIO SUDAH DIPILIH
     $calendar = [];
-    for ($i = 0; $i < 7; $i++) {
-    $dateObj = now()->addDays($i);
-    $calendar[] = [
-        'full_date' => $dateObj->format('Y-m-d'),
-        'day'       => $dateObj->format('D'), 
-        'date'      => $dateObj->format('d'), 
-        ];
-    }
-    // JAM + HARGA
-        
-    $times = collect(); // Default kosong agar tidak error saat baru buka halaman
-
-    // Kita hanya cari jadwal jika user SUDAH memilih Studio
     if ($studioId) {
-        $times = DB::table('jadwal_tayang')
-        ->where('id_film', $filmId)
-        ->where('id_studio', $studioId) // Jadwal di tabel ini hanya pakai id_studio
-        ->where('tanggal', $date)      // Pastikan nama kolomnya 'tanggal' sesuai phpMyAdmin
-        ->get();
-    }
-    if ($times->isEmpty()) {
-    $times = collect([
-        (object)['jam_tayang' => '13:00', 'harga_tiket' => 50000],
-        (object)['jam_tayang' => '16:00', 'harga_tiket' => 50000],
-        (object)['jam_tayang' => '19:00', 'harga_tiket' => 55000],
-        (object)['jam_tayang' => '21:00', 'harga_tiket' => 55000],
-        ]);
+        for ($i = 0; $i < 7; $i++) {
+        $dateObj = now()->addDays($i);
+        $calendar[] = [
+            'full_date' => $dateObj->format('Y-m-d'),
+            'day'       => $dateObj->format('D'), 
+            'date'      => $dateObj->format('d'), 
+            ];
+        }
     }
     
+    // JAM + HARGA - HANYA TAMPIL KALAU STUDIO DAN TANGGAL SUDAH DIPILIH
+    $times = collect();
+
+    if ($studioId && $date) {
+        $times = DB::table('jadwal_tayang')
+        ->where('id_film', $filmId)
+        ->where('id_studio', $studioId)
+        ->where('tanggal', $date)
+        ->get();
+
+        if ($times->isEmpty()) {
+        $times = collect([
+            (object)['jam_tayang' => '13:00', 'harga_tiket' => 50000],
+            (object)['jam_tayang' => '16:00', 'harga_tiket' => 50000],
+            (object)['jam_tayang' => '19:00', 'harga_tiket' => 55000],
+            (object)['jam_tayang' => '21:00', 'harga_tiket' => 55000],
+            ]);
+        }
+    }
 
     return view('movieDetails', compact(
         'movie',
