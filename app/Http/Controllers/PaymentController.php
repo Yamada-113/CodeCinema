@@ -1,150 +1,127 @@
 <?php
+
 namespace App\Http\Controllers;
-use App\Models\Movie;
-use Illuminate\Support\Facades\DB;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
 
 class PaymentController extends Controller
 {
     public function payment(Request $request)
     {
-        $seatIds = $request->input('seats', []); 
 
-        // Ambil data kursi
-        $seats = DB::table('tabel_kursi')
-                    ->whereIn('id_kursi', $seatIds)
-                    ->get();
+        if ($request->has('seats')) {
+            $seatIds = is_array($request->seats)
+                ? $request->seats
+                : explode(',', $request->seats);
 
-        // Gabungkan baris + nomor
-        $seatLabels = $seats->map(function($s) {
-            return $s->baris_kursi . $s->nomor_kursi;
-        })->toArray();
+            session(['seats' => $seatIds]);
+        } else {
+            $seatIds = session('seats', []);
+        }
 
-        // Ambil jadwal + harga + studio
-        $jadwal = DB::table('jadwal_tayang')
-                    ->where('id_studio', $request->input('id_studio'))
-                    ->where('tanggal', $request->input('date'))
-                    ->where('jam_tayang', $request->input('jam'))
-                    ->first();
+        $id_studio = $request->id_studio ?? session('id_studio');
+        $date      = $request->date ?? session('date');
+        $jam       = $request->jam ?? session('jam');
 
-        // Ambil info studio + lokasi
-        $studio = DB::table('tabel_studio')
-                    ->where('id_studio', $request->input('id_studio'))
-                    ->first();
+        if (!$id_studio || !$date || !$jam) {
+            return redirect('/home')->with('error', 'Sesi habis, silakan pilih kursi kembali.');
+        }
 
-        $lokasi = DB::table('tabel_lokasi')
-                    ->where('id_lokasi', $studio->id_lokasi)
-                    ->first();
-
-        // Ambil info film
-        $movie = DB::table('tabel_film')
-                ->where('id_film', $jadwal->id_film)
-                ->first();
-
-        // Prepare booking array
-        $booking = [
-            'id_film'   => $movie->id_film,
-            'id_studio' => $studio->id_studio,
-            'movie' => $movie->judul ?? '-',
-            'date' => $jadwal->tanggal ?? '-',
-            'time' => $jadwal->jam_tayang ?? '-',
-            'location' => $lokasi->nama_lokasi ?? '-',
-            'seats' => $seatLabels,
-            'seat_ids' => $seatIds,
-            'price' => $jadwal->harga_tiket ?? 0
-        ];
-
-    return view('payment', compact('booking', 'jadwal'));
-    }
-
-    public function processPayment(Request $request)
-    {
-        
-        $uniqueId = 'PYMT-' . Str::upper(Str::random(8));
-        $seatIds = $request->input('seats', []);
-
-        // Validasi form (opsional, tapi aman)
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'method' => 'required|string',
+        session([
+            'id_studio' => $id_studio,
+            'date'      => $date,
+            'jam'       => $jam
         ]);
 
-        // Simpan pembayaran ke DB
-        $paymentId = DB::table('tabel_pembayaran')->insert([
-        'id_pembayaran' => $uniqueId,
-        'id_jadwal' => $request->id_jadwal,
-        'full_name' => $request->name,
-        'email' => $request->email,
-        'metode_pembayaran' => $request->method,
-        'id_kursi' => json_encode($seatIds),
-        'tanggal_bayar' => now(),
+        $jadwal = DB::table('jadwal_tayang')->where([
+            ['id_studio', $id_studio],
+            ['tanggal', $date],
+            ['jam_tayang', $jam]
+        ])->first();
+
+        if (!$jadwal) return redirect()->back();
+
+        $movie  = DB::table('tabel_film')->where('id_film', $jadwal->id_film)->first();
+        $studio = DB::table('tabel_studio')->where('id_studio', $id_studio)->first();
+
+        $seatLabels = DB::table('tabel_kursi')
+        ->whereIn('id_kursi', $seatIds)
+        ->selectRaw("CONCAT(baris_kursi, nomor_kursi) as seat")
+        ->pluck('seat')
+        ->toArray();
+
+        return view('payment', [
+            'booking' => [
+                'movie'     => $movie->judul,
+                'date'      => $jadwal->tanggal,
+                'time'      => $jadwal->jam_tayang,
+                'location'  => $studio->nama_studio ?? 'Studio ' . $id_studio,
+                'price'     => $jadwal->harga ?? 50000,
+
+                // TAMPILAN
+                'seats'     => $seatLabels,
+
+                // DATABASE
+                'seat_ids'  => $seatIds,
+
+                'id_film'   => $movie->id_film,
+                'id_studio' => $id_studio,
+                'poster'    => $movie->poster_film,
+            ],
+            'jadwal' => $jadwal
+        ]);
+    }
+
+        public function processPayment(Request $request)
+{
+        $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|exists:tabel_user,email',
+        'method' => 'required|string',
+     ], [
+        'email.exists' => 'Email tidak terdaftar. Silakan gunakan email yang sudah terdaftar.'
     ]);
 
-    foreach ($request->seats as $seatId) {
-    DB::table('tabel_pemesanan')->insert([
-        'id_pembayaran' => $uniqueId,
-        'id_jadwal' => $request->id_jadwal,
-        'id_kursi' => (int) $seatId,
-    ]);
+        $emailExists = DB::table('tabel_user')
+        ->where('email', $request->email)
+        ->exists();
 
-    // $jadwalId  = $request->query('id_jadwal');
+        $uniqueId = 'PYMT-' . Str::upper(Str::random(8));
+        $seatIds  = $request->input('seats', []);
 
-    // $takenSeats = DB::table('tabel_pemesanan')
-    // ->where('id_jadwal', $jadwalId)
-    // ->pluck('id_kursi')
-    // ->toArray();
+        DB::transaction(function () use ($request, $uniqueId, $seatIds) {
 
-     DB::table('tabel_kursi')
-        ->whereIn('id_kursi', $seatIds)
-        ->update(['status' => 'taken']);
+            DB::table('tabel_pembayaran')->insert([
+                'id_pembayaran'     => $uniqueId,
+                'id_jadwal'         => $request->id_jadwal,
+                'full_name'         => $request->name,
+                'email'             => $request->email,
+                'metode_pembayaran' => $request->method,
+                'id_kursi'          => json_encode($seatIds),
+                'tanggal_bayar'     => now(),
+            ]);
 
-    }
+            foreach ($seatIds as $seatId) {
 
-        return redirect()->route('payment.tiket', $uniqueId);
-    }
+                DB::table('tabel_pemesanan')->insert([
+                    'id_pembayaran' => $uniqueId,
+                    'id_jadwal'     => $request->id_jadwal,
+                    'id_kursi'      => (int) $seatId,
+                ]);
 
-    public function tiket($paymentId)
-    {
-    // Ambil data pembayaran berdasarkan ID
-    $ticket = DB::table('tabel_pembayaran as p')
-    ->join('jadwal_tayang as j', 'p.id_jadwal', '=', 'j.id_jadwal')
-    ->join('tabel_film as f', 'j.id_film', '=', 'f.id_film')
-    ->join('tabel_studio as s', 'j.id_studio', '=', 's.id_studio')
-    ->join('tabel_lokasi as l', 's.id_lokasi', '=', 'l.id_lokasi')
-    ->where('p.id_pembayaran', $paymentId)
-    ->select(
-        'p.id_pembayaran',
-        'p.full_name',
-        'p.email',
-        'p.metode_pembayaran',
-        'p.id_kursi',
-        'p.tanggal_bayar',
+                DB::table('tabel_kursi')
+                    ->where('id_kursi', $seatId)
+                    ->update(['status' => 'taken']);
+            }
+        });
 
-        'j.tanggal',
-        'j.jam_tayang',
-        'j.harga_tiket',
+        session()->forget('seats');
 
-        'f.judul',
-        'f.poster_film',
-
-        's.nama_studio',
-
-        'l.nama_lokasi'
-    )
-    ->first();
-
-    $seatIds = json_decode($ticket->id_kursi, true);
-
-    $seats = DB::table('tabel_kursi')
-        ->whereIn('id_kursi', $seatIds)
-        ->get();
-
-
-    return view('tiket', compact('ticket', 'seats'));
+        return redirect()->route('payment.tiket', $uniqueId)
+        ->with('success', 'Pembayaran berhasil, tiket berhasil dibuat');
 
     }
-
-
 }

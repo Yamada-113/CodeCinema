@@ -11,62 +11,79 @@
 
     {{-- LEFT : ORDER SUMMARY --}}
     <div class="card summary">
-    <h2>Order Summary</h2>
-    <img src="{{ $movie->poster ?? 'https://i.pinimg.com/1200x/f0/0e/f4/f00ef4ef28062a3ffe32c80cfa039c86.jpg' }}" class="poster">
-    <p><b>Movie:</b> {{ $booking['movie'] }}</p>
-    <p><b>Date:</b> {{ $booking['date'] }}</p>
-    <p><b>Show Time:</b> {{ $booking['time'] }}</p>
-    <p><strong>Lokasi:</strong> {{ $booking['location'] }}</p>
-    <p><b>Seats:</b> {{ implode(', ', $booking['seats']) }}</p>
-    <p><b>Price / Seat:</b> Rp {{ number_format($booking['price']) }}</p>
-    <p><b>Total Price:</b> Rp {{ number_format($booking['price'] * count($booking['seats'])) }}</p>
+        <h2>Order Summary</h2>
 
+        <img src="{{ $booking['poster'] }}" class="poster">
 
-        <hr>
-        <p class="total">
-            Total:
-            Rp {{ number_format(count($booking['seats']) * $booking['price']) }}
-        </p>
+        <p><b>Movie:</b> {{ $booking['movie'] }}</p>
+        <p><b>Date:</b> {{ $booking['date'] }}</p>
+        <p><b>Show Time:</b> {{ $booking['time'] }}</p>
+        <p><b>Studio:</b> {{ $booking['location'] }}</p>
+        <p><b>Seats:</b> {{ implode(', ', $booking['seats']) }}</p>
+
+        <hr style="border: 1px solid #777; margin: 8px 0;">
+
+        @php
+            $total = count($booking['seats']) * $booking['price'];
+        @endphp
+
+        <p><b>Total Price:</b> Rp {{ number_format($total,0,',','.') }}</p>
     </div>
 
     {{-- RIGHT : PAYMENT FORM --}}
     <div class="card">
         <h2>Payment Details</h2>
 
-        @if(session('success'))
-            <div class="success">
-                {{ session('success') }}
+        <form action="{{ route('payment.process') }}" method="POST">
+            @csrf
+
+            {{-- hidden --}}
+            <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
+
+            @foreach($booking['seat_ids'] as $sid)
+                <input type="hidden" name="seats[]" value="{{ $sid }}">
+            @endforeach
+
+            {{-- FULL NAME --}}
+            <div class="input-group">
+                <label>Full Name</label>
+                <input type="text" name="name" value="{{ old('name') }}" required>
             </div>
-        @endif
 
-    <form method="POST" action="/payment/processPayment">
-        <input type="hidden" name="film_id" value="{{ $booking['id_film'] }}">
-        <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
-        <input type="hidden" name="studio_id" value="{{ $booking['id_studio'] }}">
-        <input type="hidden" name="date" value="{{ $booking['date'] }}">
-        <input type="hidden" name="time" value="{{ $booking['time'] }}">
+            {{-- EMAIL --}}
+            <div class="input-group">
+                <label>Email (Gunakan email terdaftar)</label>
 
-        @foreach($booking['seat_ids'] as $seatId)
-            <input type="hidden" name="seats[]" value="{{ $seatId }}">
-        @endforeach
-        
-        @csrf
-    
-    <label>Full Name</label>
-    <input type="text" name="name" required>
-    <label>Email</label>
-    <input type="email" name="email" required>
-    <label>Payment Method</label>
-    <select name="method" required>
-        <option value="">-- Select Method --</option>
-        <option>QRIS</option>
-        <option>Bank BCA</option>
-        <option>Bank Mandiri</option>
-    </select>
+                <input 
+                    type="email"
+                    name="email"
+                    value="{{ old('email') }}"
+                    class="@error('email') is-invalid @enderror"
+                    required
+                >
 
-    <button type="submit">Pay Now</button>
-</form>
+                @error('email')
+                    <div class="email-error">
+                        ⚠️ {{ $message }}
+                    </div>
+                @enderror
+            </div>
 
+            {{-- PAYMENT METHOD --}}
+            <div class="input-group">
+                <label>Payment Method</label>
+                <select name="method" required>
+                    <option value="">-- Select Method --</option>
+                    <option value="QRIS" {{ old('method')=='QRIS' ? 'selected' : '' }}>QRIS</option>
+                    <option value="Bank BCA" {{ old('method')=='Bank BCA' ? 'selected' : '' }}>Bank BCA</option>
+                    <option value="Bank Mandiri" {{ old('method')=='Bank Mandiri' ? 'selected' : '' }}>Bank Mandiri</option>
+                </select>
+            </div>
+
+            <button class="btn-pay" type="submit">
+                Pay Now
+            </button>
+        </form>
     </div>
 
 </div>

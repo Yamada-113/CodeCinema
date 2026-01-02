@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
@@ -12,7 +11,7 @@ use Illuminate\Http\Request;
 
 Route::get('/home', [HomeController::class, 'index']);
 Route::get('/homeAdmin', [HomeController::class, 'admin']);
-// Route::get('/movieDetails', [MovieController::class, 'show']);
+
 Route::get('/movieDetails/{id}', [MovieController::class, 'booking'])->name('movie.details');
 Route::get(
   '/movie/{film}/{lokasi?}/{studio?}/{date?}/{jam?}',
@@ -28,21 +27,18 @@ Route::get('/Admin/homeAdmin', function () {
     return view('Admin.homeAdmin');
 });
 
-// Route::view('/tiket','tiket',[
-//     'movie' => 'Interstellar',
-//     'date' => 'Thursday, 4 May',
-//     'time' => '20:00',
-//     'location' => 'Mall Taman Anggrek',
-//     'seat' => 'A1', 'A2',
-//     'code' => '61400'
-// ]);
 
-Route::post('/payment', [PaymentController::class, 'payment']);
-Route::post('/payment/processPayment', [PaymentController::class, 'processPayment']);
-Route::get('/tiket/{paymentId}', [PaymentController::class, 'tiket'])->name('payment.tiket');
+// tampilkan halaman payment
+Route::post('/payment', [PaymentController::class, 'payment'])
+    ->name('payment.show');
 
+// proses pembayaran (VALIDASI ADA DI SINI)
+Route::post('/payment/process', [PaymentController::class, 'processPayment'])
+    ->name('payment.process');
 
+// halaman tiket setelah sukses
+Route::get('/payment/tiket/{id}', [TiketController::class, 'result'])
+    ->name('payment.tiket');
 
-
-
+Route::get('/payment', [PaymentController::class, 'payment'])->name('payment.get');
 
