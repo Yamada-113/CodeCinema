@@ -12,8 +12,8 @@
 
     <div 
         class="ticket-poster"
-        style="background-image: url('{{ $ticket->poster_film ?? 'https://i.pinimg.com/1200x/f0/0e/f4/f00ef4ef28062a3ffe32c80cfa039c86.jpg' }}')">
-    </div>
+        style="background-image: url('{{ $ticket->poster_film ?? 'https://i.pinimg.com/1200x/f0/0e/f4/f00ef4ef28062a3ffe32c80cfa039c86.jpg' }}')"
+    ></div>
 
         <div class="ticket-info">
             <h1 class="movie-title">{{ $ticket->judul }}</h1>
