@@ -1,5 +1,3 @@
-tikect controller
-
 <?php
 
 namespace App\Http\Controllers;

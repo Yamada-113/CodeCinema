@@ -42,3 +42,9 @@ Route::get('/payment/tiket/{id}', [TiketController::class, 'result'])
 
 Route::get('/payment', [PaymentController::class, 'payment'])->name('payment.get');
 
+// Ganti /movies menjadi /search
+Route::get('/search', [MovieController::class, 'search'])->name('movies.search');
+Route::get('/my-bookings', function () {
+    return view('my-bookings');
+});
+
