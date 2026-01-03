@@ -35,6 +35,10 @@ Route::post('/payment/process', [PaymentAndTicketController::class, 'processPaym
 Route::get('/payment/tiket/{paymentId}', [PaymentAndTicketController::class, 'tiket'])
     ->name('payment.tiket');
 
-Route::get('/payment', [PaymentController::class, 'payment'])->name('payment.get');
-Route::get('/tiket', [TiketController::class, 'index'])->name('tiket.index');
+// Route::get('/payment', [PaymentController::class, 'payment'])->name('payment.get');
+// Route::get('/tiket', [TiketController::class, 'index'])->name('tiket.index');
 
+Route::get('/search', [MovieController::class, 'search'])->name('movies.search');
+Route::get('/my-bookings', function () {
+    return view('my-bookings');
+});
