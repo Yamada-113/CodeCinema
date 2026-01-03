@@ -99,9 +99,29 @@ class MovieController extends Controller
         'date',
         'calendar',
         'times',
+        'jam',
         'seats'
     ));
 }
+public function search(Request $request)
+{
+    $query = $request->input('query');
+    $genre = $request->input('genre');
 
+    $movieQuery = DB::table('tabel_film');
+
+    if ($query) {
+        $movieQuery->where('judul', 'LIKE', "%{$query}%");
+    }
+
+    if ($genre) {
+        // Menggunakan LIKE %...% agar lebih "longgar" terhadap spasi atau typo kecil
+        $movieQuery->where('genre', 'LIKE', "%" . trim($genre) . "%");
+    }
+
+    $movies = $movieQuery->get();
+
+    return view('search', compact('movies'));
+}
 
 }

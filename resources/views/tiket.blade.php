@@ -41,9 +41,7 @@
         <div class="info-row">
             <span>Seats</span>
             <strong>
-                @foreach($seats as $seat)
-                    {{ $seat->baris_kursi }}{{ $seat->nomor_kursi }}@if(!$loop->last), @endif
-                @endforeach
+                {{ implode(', ', $seats) }}
             </strong>
         </div>
 

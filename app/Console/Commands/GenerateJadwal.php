@@ -13,7 +13,7 @@ class GenerateJadwal extends Command
 
     public function handle()
     {
-        $filmId = 1;
+        $filmId = DB::table('tabel_film')->pluck('id_film');;
         $studioIds = DB::table('tabel_studio')->pluck('id_studio');
 
         $showTimes = [
