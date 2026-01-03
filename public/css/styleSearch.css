@@ -1,0 +1,59 @@
+/* Styling untuk Halaman Search/Explore */
+
+body {
+    background-color: #000;
+    color: white;
+}
+
+.search-wrapper {
+    margin-top: 80px; /* Memberi jarak agar tidak tertutup topbar */
+}
+
+.search-input {
+    background-color: #1a1a1a !important;
+    border: 1px solid #333 !important;
+    color: white !important;
+    border-radius: 8px;
+}
+
+.search-input:focus {
+    border-color: #e50914 !important; /* Warna merah ala Netflix/Cinema */
+    box-shadow: 0 0 5px rgba(229, 9, 20, 0.5);
+}
+
+.genre-link {
+    text-decoration: none;
+    transition: transform 0.2s;
+}
+
+.genre-link:hover {
+    transform: scale(1.05);
+}
+
+.badge {
+    padding: 10px 18px;
+    font-weight: 500;
+}
+
+/* Memastikan baris film tetap rapi di halaman search */
+.movie-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+    padding: 10px;
+}
+.filter-container .form-control {
+    width: 100%; /* Memastikan kotak selebar layar */
+    border: 1px solid #444;
+    padding: 12px 20px;
+    border-radius: 8px;
+}
+
+/* Menghilangkan garis biru saat diklik agar tetap gelap */
+.form-control:focus {
+    background-color: #1a1a1a !important;
+    border-color: #ff0000 !important;
+    box-shadow: none !important;
+    color: white;
+}

@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Movie App - CodeCinema</title>
+  <title>Search - CodeCinema</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="{{ asset('css/styleHome.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/stylSearch.css') }}">
 </head>
 <body>
 
@@ -20,58 +21,61 @@
   </div>
 </header>
 
-
-<div id="promoCarousel" class="carousel slide" data-bs-ride="carousel" style="background:black">
- <div id="promoCarousel" class="carousel slide" data-bs-ride="carousel">
-  <div class="carousel-inner">
-
-    <div class="carousel-item active">
-      <img src="https://web3.21cineplex.com/mobile-banner/XXI_HEADLINE%20APPS.jpg" class="d-block w-100 promo-img">
+<section class="section">
+  <h2 class="px-3">Explore Movies</h2>
+  
+  <div class="filter-container px-3 mb-4">
+    <form action="/search" method="GET">
+      <input type="text" name="query" class="form-control bg-dark text-white mb-3 shadow-none" 
+             placeholder="Search movies..." value="{{ request('query') }}" autocomplete="off">
+    </form>
+    
+    <div class="d-flex gap-2 overflow-auto py-2" style="scrollbar-width: none;">
+        <a href="/search" class="text-decoration-none">
+          <span class="badge rounded-pill {{ !request('genre') ? 'bg-danger' : 'bg-secondary' }}">All</span>
+        </a>
+        <a href="/search?genre=Action" class="text-decoration-none">
+          <span class="badge rounded-pill {{ request('genre') == 'Action' ? 'bg-danger' : 'bg-secondary' }}">Action</span>
+        </a>
+        <a href="/search?genre=Horror" class="text-decoration-none">
+          <span class="badge rounded-pill {{ request('genre') == 'Horror' ? 'bg-danger' : 'bg-secondary' }}">Horror</span>
+        </a>
+        <a href="/search?genre=Comedy" class="text-decoration-none">
+          <span class="badge rounded-pill {{ request('genre') == 'Comedy' ? 'bg-danger' : 'bg-secondary' }}">Comedy</span>
+        </a>
+        <a href="/search?genre=Romance" class="text-decoration-none">
+          <span class="badge rounded-pill {{ request('genre') == 'Romance' ? 'bg-danger' : 'bg-secondary' }}">Romance</span>
+        </a>
     </div>
-
-    <div class="carousel-item">
-      <img src="https://web3.21cineplex.com/mobile-banner/dusun%20mayit%20Headline%20apps_840%20x%20400%20px.jpg" class="d-block w-100 promo-img">
-    </div>
-
-    <div class="carousel-item">
-      <img src="https://web3.21cineplex.com/evoucher/WA2025120917005475762151912801_banner.jpg?sn=460962021" class="d-block w-100 promo-img">
-    </div>
-
   </div>
 
-  <button class="carousel-control-prev" type="button" data-bs-target="#promoCarousel" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon"></span>
-  </button>
-
-  <button class="carousel-control-next" type="button" data-bs-target="#promoCarousel" data-bs-slide="next">
-    <span class="carousel-control-next-icon"></span>
-  </button>
-</div>
-
-
-<section class="section">
+  @if($movies->count() > 0)
+    <h2 class="px-3">Now Playing</h2>
+    <div class="movie-row">
+      @foreach($movies as $movie)
+      <div class="movie-card">
+          <img src="{{ $movie->poster_film }}" alt="{{ $movie->judul }}">
+          <div class="movie-info">
+              <p class="title">{{ $movie->judul }}</p>
+              <div class="meta">
+                  <span class="age">{{ $movie->rating }}</span>
+                  <span class="duration">{{ $movie->durasi }} min</span>
+              </div>
+              <a href="{{ route('movie.details', $movie->id_film) }}" class="watch">Watch</a>
+          </div>
+      </div>
+      @endforeach
+    </div>
+  @else
+    <div class="text-center py-5">
+      <img src="https://cdn-icons-png.flaticon.com/512/7486/7486744.png" alt="Not Found" style="width: 80px; opacity: 0.5;">
+      <h5 class="text-white mt-3">Maaf, film tidak ditemukan</h5>
+      <a href="/search" class="btn btn-outline-danger btn-sm">Reset Pencarian</a>
+    </div>
+  @endif
   </section>
 
-
-<section class="section">
-  <h2>Now Playing</h2>
-  <div class="movie-row">
-    @foreach($movies as $movie)
-    <div class="movie-card">
-        <img src="{{ $movie->poster_film }}" alt="{{ $movie->judul }}">
-        <div class="movie-info">
-            <p class="title">{{ $movie->judul }}</p>
-            <div class="meta">
-                <span class="age">{{ $movie->rating }}</span>
-                <span class="duration">{{ $movie->durasi }} min</span>
-            </div>
-            <a href="{{ route('movie.details', $movie->id_film) }}" class="watch">Watch</a>
-        </div>
-    </div>
-    @endforeach
-</div>   
-</section>
-
+@if(!request('query') && !request('genre'))
 <section class="section">
   <h2>Coming Soon</h2>
   <div class="movie-row">
@@ -155,10 +159,11 @@
 
     </div>
 </section>
+@endif
 
 <nav class="bottom-nav">
-  <a href="/home" class="active">Home</a>
-  <a href="/search">Search</a>
+  <a href="/home">Home</a>
+  <a href="/Search" class="active">Search</a>
   <a href="/my-bookings">My Bookings</a>
   <a href="/profile">Profile</a>
 </nav>
