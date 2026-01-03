@@ -1,75 +1,130 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>Payment | CodeCinema</title>
-    <link rel="stylesheet" href="{{ asset('css/payment.css') }}">
-</head>
-<body>
+<?php
+namespace App\Http\Controllers;
 
-<div class="wrapper">
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
 
-    {{-- LEFT : ORDER SUMMARY --}}
-    <div class="card summary">
-    <h2>Order Summary</h2>
-    <img src="{{ $movie->poster ?? 'https://i.pinimg.com/1200x/f0/0e/f4/f00ef4ef28062a3ffe32c80cfa039c86.jpg' }}" class="poster">
-    <p><b>Movie:</b> {{ $booking['movie'] }}</p>
-    <p><b>Date:</b> {{ $booking['date'] }}</p>
-    <p><b>Show Time:</b> {{ $booking['time'] }}</p>
-    <p><strong>Lokasi:</strong> {{ $booking['location'] }}</p>
-    <p><b>Seats:</b> {{ implode(', ', $booking['seats']) }}</p>
-    <p><b>Price / Seat:</b> Rp {{ number_format($booking['price']) }}</p>
-    <p><b>Total Price:</b> Rp {{ number_format($booking['price'] * count($booking['seats'])) }}</p>
+class PaymentController extends Controller
+{
+    public function payment(Request $request)
+    {
+        // 1. Menangani Data Kursi
+        if ($request->has('seats')) {
+            $seatIds = is_array($request->seats)
+                ? $request->seats
+                : explode(',', $request->seats);
 
+            session(['seats' => $seatIds]);
+        } else {
+            $seatIds = session('seats', []);
+        }
 
-        <hr>
-        <p class="total">
-            Total:
-            Rp {{ number_format(count($booking['seats']) * $booking['price']) }}
-        </p>
-    </div>
+        // 2. Ambil Parameter dari Request atau Session
+        $id_studio = $request->id_studio ?? session('id_studio');
+        $date      = $request->date ?? session('date');
+        $jam       = $request->jam ?? session('jam');
 
-    {{-- RIGHT : PAYMENT FORM --}}
-    <div class="card">
-        <h2>Payment Details</h2>
+        if (!$id_studio || !$date || !$jam) {
+            return redirect('/home')->with('error', 'Sesi habis, silakan pilih kursi kembali.');
+        }
 
-        @if(session('success'))
-            <div class="success">
-                {{ session('success') }}
-            </div>
-        @endif
+        session([
+            'id_studio' => $id_studio,
+            'date'      => $date,
+            'jam'       => $jam
+        ]);
 
-    <form method="POST" action="/payment/processPayment">
-        <input type="hidden" name="film_id" value="{{ $booking['id_film'] }}">
-        <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
-        <input type="hidden" name="studio_id" value="{{ $booking['id_studio'] }}">
-        <input type="hidden" name="date" value="{{ $booking['date'] }}">
-        <input type="hidden" name="time" value="{{ $booking['time'] }}">
+        // 3. Ambil Data Jadwal
+        $jadwal = DB::table('jadwal_tayang')->where([
+            ['id_studio', $id_studio],
+            ['tanggal', $date],
+            ['jam_tayang', $jam]
+        ])->first();
 
-        @foreach($booking['seat_ids'] as $seatId)
-            <input type="hidden" name="seats[]" value="{{ $seatId }}">
-        @endforeach
+        if (!$jadwal) return redirect()->back();
+
+        // 4. Ambil Data Pendukung (Film, Studio, Lokasi)
+        $movie  = DB::table('tabel_film')->where('id_film', $jadwal->id_film)->first();
+        $studio = DB::table('tabel_studio')->where('id_studio', $id_studio)->first();
         
-        @csrf
-    
-    <label>Full Name</label>
-    <input type="text" name="name" required>
-    <label>Email</label>
-    <input type="email" name="email" required>
-    <label>Payment Method</label>
-    <select name="method" required>
-        <option value="">-- Select Method --</option>
-        <option>QRIS</option>
-        <option>Bank BCA</option>
-        <option>Bank Mandiri</option>
-    </select>
+        // PERBAIKAN: Mengambil data lokasi agar tidak muncul "Location1"
+        $location = DB::table('tabel_lokasi')
+            ->where('id_lokasi', $studio->id_lokasi)
+            ->first();
 
-    <button type="submit">Pay Now</button>
-</form>
+        // 5. Format Label Kursi (Misal: A1, A2)
+        $seatLabels = DB::table('tabel_kursi')
+            ->whereIn('id_kursi', $seatIds)
+            ->selectRaw("CONCAT(baris_kursi, nomor_kursi) as seat")
+            ->pluck('seat')
+            ->toArray();
 
-    </div>
+        return view('payment', [
+            'booking' => [
+                'movie'     => $movie->judul ?? 'Unknown Movie',
+                'date'      => $jadwal->tanggal,
+                'time'      => $jadwal->jam_tayang,
+                'location'  => $location->nama_lokasi ?? 'Mall Taman Anggrek', 
+                'price'     => $jadwal->harga ?? 50000,
 
-</div>
+                // TAMPILAN
+                'seats'     => $seatLabels,
 
-</body>
-</html>
+                // DATA UNTUK FORM/DATABASE
+                'seat_ids'  => $seatIds,
+                'id_film'   => $movie->id_film,
+                'id_studio' => $id_studio,
+                'id_jadwal' => $jadwal->id_jadwal,
+                'poster'    => $movie->poster_film,
+            ],
+            'jadwal' => $jadwal
+        ]);
+    }
+
+    public function processPayment(Request $request)
+    {
+        // 1. Validasi Input
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|exists:tabel_user,email',
+            'method' => 'required|string',
+            'id_jadwal' => 'required',
+            'seats' => 'required|array'
+        ], [
+            'email.exists' => 'Email tidak terdaftar. Silakan gunakan email yang sudah terdaftar.'
+        ]);
+
+        $uniqueId = 'PYMT-' . Str::upper(Str::random(8));
+        $seatIds  = $request->input('seats', []);
+
+        // 2. Simpan ke tabel_pembayaran
+        DB::table('tabel_pembayaran')->insert([
+            'id_pembayaran'     => $uniqueId,
+            'id_jadwal'         => $request->id_jadwal,
+            'full_name'         => $request->name,
+            'email'             => $request->email,
+            'metode_pembayaran' => $request->method,
+            'id_kursi'          => json_encode($seatIds),
+            'tanggal_bayar'     => now(),
+        ]);
+
+        // 3. Simpan Detail Kursi ke tabel_pemesanan
+        foreach ($seatIds as $seatId) {
+            DB::table('tabel_pemesanan')->insert([
+                'id_pembayaran' => $uniqueId,
+                'id_jadwal'     => $request->id_jadwal,
+                'id_kursi'      => (int) $seatId,
+            ]);
+        }
+
+        // 4. Update Status Kursi Jadi 'taken'
+        DB::table('tabel_kursi')
+            ->whereIn('id_kursi', $seatIds)
+            ->update(['status' => 'taken']);
+
+        // 5. Redirect ke Halaman Tiket
+        return redirect()->route('payment.tiket', $uniqueId);
+    }
+}
