@@ -13,13 +13,14 @@
     <div class="card summary">
         <h2>Order Summary</h2>
 
-        <img src="{{ $booking['poster'] }}" class="poster">
+        <img src="{{ $booking['poster'] }}" class="poster" alt="{{ $booking['movie'] }}">
 
-        <p><b>Movie:</b> {{ $booking['movie'] }}</p>
+        <p><b>Movie:</b> {{ $booking['movie'] ?? '-' }}
         <p><b>Date:</b> {{ $booking['date'] }}</p>
         <p><b>Show Time:</b> {{ $booking['time'] }}</p>
-        <p><b>Studio:</b> {{ $booking['location'] }}</p>
-        <p><b>Seats:</b> {{ implode(', ', $booking['seats']) }}</p>
+        <p><strong>Lokasi:</strong> {{ $booking['location'] }}</p>
+        <p><b>Seats:</b> {{ implode(', ', $booking['seats'] ?? []) }}
+        <p><b>Price / Seat:</b> Rp {{ number_format($booking['price']) }}</p>
 
         <hr style="border: 1px solid #777; margin: 8px 0;">
 

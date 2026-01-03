@@ -41,4 +41,5 @@ Route::get('/payment/tiket/{id}', [TiketController::class, 'result'])
     ->name('payment.tiket');
 
 Route::get('/payment', [PaymentController::class, 'payment'])->name('payment.get');
+Route::get('/tiket', [TiketController::class, 'index'])->name('tiket.index');
 
