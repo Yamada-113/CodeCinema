@@ -221,30 +221,6 @@ body {
   height: 100%;
   object-fit: cover;
 }
-
-.logo-wrapper {
-  display: flex;
-  align-items: center; 
-  gap: 10px; 
-}
-
-.cinema-logo {
-    height: 50px;
-    width: 50px; 
-    object-fit: cover; 
-    border-radius: 50%; 
-    border: 2px solid #4f7cff; 
-    background: #181b22; 
-    box-shadow: 0 0 15px rgba(79, 124, 255, 0.4); 
-    padding: 2px; 
-    transition: transform 0.3s ease; 
-}
-
-.cinema-logo:hover {
-    transform: scale(1.1); 
-    box-shadow: 0 0 20px rgba(79, 124, 255, 0.7); 
-}
-
 .topbar {
   display: flex;
   justify-content: space-between;

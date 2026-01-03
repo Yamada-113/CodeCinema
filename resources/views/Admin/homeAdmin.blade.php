@@ -9,7 +9,10 @@
 <body>
 
 <header class="topbar">
-  <h1>CodeCinema</h1>
+  <div class="logo-wrapper">
+    <img src="{{ asset('foto/Logo CodeCinema.png') }}" alt="Logo" class="cinema-logo">
+    <h1>CodeCinema</h1>
+  </div>
   <div class="header-right">
     <a href="/login" class="btn-logout">Logout</a>
     <span class="location">Jakarta ▼</span>
@@ -23,113 +26,27 @@
 </section>
 
   <div class="movie-row">
-    
+    @foreach($movies as $movie)
     <div class="movie-card">
-      <img src="https://i.pinimg.com/1200x/f0/0e/f4/f00ef4ef28062a3ffe32c80cfa039c86.jpg" alt="Interstellar">
-      <div class="movie-info">
-        <p class="title">Interstellar</p>
-        <div class="meta">
-          <span class="age">13+</span>
-          <span class="duration">169 min</span>
+        <img src="{{ $movie->poster_film }}" alt="{{ $movie->judul }}">
+        <div class="movie-info">
+            <p class="title">{{ $movie->judul }}</p>
+            <div class="meta">
+                <span class="age">{{ $movie->rating }}</span>
+                <span class="duration">{{ $movie->durasi }} min</span>
+            </div>
+            <div class="crud-actions">
+                <button class="edit" onclick="openModal('edit', '{{ $movie->id_film }}')">Edit</button>
+                <form action="{{ route('movie.destroy', $movie->id_film) }}" method="POST" style="display:inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="delete" onclick="return confirm('Hapus film ini?')">Hapus</button>
+                </form>
+            </div>
         </div>
-        <div class="crud-actions">
-            <button class="edit" onclick="openModal('edit', 'Interstellar')">Edit</button>
-            <button class="delete" onclick="return confirm('Hapus film ini?')">Hapus</button>
-        </div>
-      </div>
     </div>
-
-    <div class="movie-card">
-      <img src="https://i.pinimg.com/1200x/96/dc/fb/96dcfbe4a7b35070f73fd81df4a8737a.jpg" alt="Howl Moving Castle">
-      <div class="movie-info">
-        <p class="title">Howl Moving Castle</p>
-        <div class="meta">
-          <span class="age">7+</span>
-          <span class="duration">119 min</span>
-        </div>
-        <div class="crud-actions">
-            <button class="edit" onclick="openModal('edit', 'Interstellar')">Edit</button>
-            <button class="delete" onclick="return confirm('Hapus film ini?')">Hapus</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="movie-card">
-      <img src="https://i.pinimg.com/1200x/f2/85/45/f28545a7aa8b7a65388853902d600ddf.jpg" alt="Us">
-      <div class="movie-info">
-        <p class="title">Us</p>
-        <div class="meta">
-          <span class="age">17+</span>
-          <span class="duration">116 min</span>
-        </div>
-        <div class="crud-actions">
-            <button class="edit" onclick="openModal('edit', 'Interstellar')">Edit</button>
-            <button class="delete" onclick="return confirm('Hapus film ini?')">Hapus</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="movie-card">
-      <img src="https://i.pinimg.com/1200x/3d/5f/f7/3d5ff7aa662986869d31cba4d141dafd.jpg" alt="Talk To Me">
-      <div class="movie-info">
-        <p class="title">Talk To Me</p>
-        <div class="meta">
-          <span class="age">17+</span>
-          <span class="duration">95 min</span>
-        </div>
-        <div class="crud-actions">
-            <button class="edit" onclick="openModal('edit', 'Interstellar')">Edit</button>
-            <button class="delete" onclick="return confirm('Hapus film ini?')">Hapus</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="movie-card">
-      <img src="https://i.pinimg.com/1200x/c7/56/8b/c7568bd112255cab2a581a53893d613b.jpg" alt="Dear Zindagi">
-      <div class="movie-info">
-        <p class="title">Dear Zindagi</p>
-        <div class="meta">
-          <span class="age">17+</span>
-          <span class="duration">95 min</span>
-        </div>
-        <div class="crud-actions">
-            <button class="edit" onclick="openModal('edit', 'Interstellar')">Edit</button>
-            <button class="delete" onclick="return confirm('Hapus film ini?')">Hapus</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="movie-card">
-      <img src="https://i.pinimg.com/1200x/20/d1/35/20d135bac134cc0ea741de4afabec9cd.jpg" alt="Zero">
-      <div class="movie-info">
-        <p class="title">Zero</p>
-        <div class="meta">
-          <span class="age">17+</span>
-          <span class="duration">95 min</span>
-        </div>
-        <div class="crud-actions">
-            <button class="edit" onclick="openModal('edit', 'Interstellar')">Edit</button>
-            <button class="delete" onclick="return confirm('Hapus film ini?')">Hapus</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="movie-card">
-      <img src="https://i.pinimg.com/1200x/11/d4/3b/11d43b2bf9559d162af8fe36663c770a.jpg" alt="Sumala">
-      <div class="movie-info">
-        <p class="title">Sumala</p>
-        <div class="meta">
-          <span class="age">17+</span>
-          <span class="duration">95 min</span>
-        </div>
-        <div class="crud-actions">
-            <button class="edit" onclick="openModal('edit', 'Interstellar')">Edit</button>
-            <button class="delete" onclick="return confirm('Hapus film ini?')">Hapus</button>
-        </div>
-      </div>
-    </div>
-
-  </div>
+    @endforeach
+</div>
 </section>
 
 <section class="section">
@@ -246,12 +163,72 @@
 
     </div>
 </section>
+<div id="modalAddMovie" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:9999; justify-content:center; align-items:center; padding:20px;">
+    
+    <div style="background:#181b22; padding:25px; border-radius:15px; width:100%; max-width:500px; border:1px solid #4f7cff; max-height: 90vh; overflow-y: auto;">
+        <h3 style="color:#4f7cff; margin-bottom:20px; text-align:center;">Tambah Film Baru</h3>
+        
+        <form action="{{ route('movie.store') }}" method="POST">
+            @csrf
+            <div style="margin-bottom: 15px;">
+                <label style="display:block; margin-bottom:5px; font-size:12px; color:#9aa0aa;">Judul Film</label>
+                <input type="text" name="judul" required style="width:100%; padding:10px; background:#0f1115; border:1px solid #2d323d; color:white; border-radius:5px;">
+            </div>
+
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:15px;">
+                <div>
+                    <label style="display:block; margin-bottom:5px; font-size:12px; color:#9aa0aa;">Genre</label>
+                    <input type="text" name="genre" placeholder="Action, Sci-Fi" style="width:100%; padding:10px; background:#0f1115; border:1px solid #2d323d; color:white; border-radius:5px;">
+                </div>
+                <div>
+                    <label style="display:block; margin-bottom:5px; font-size:12px; color:#9aa0aa;">Rating</label>
+                    <input type="text" name="rating" placeholder="PG-13 / 17+" style="width:100%; padding:10px; background:#0f1115; border:1px solid #2d323d; color:white; border-radius:5px;">
+                </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:15px;">
+                <div>
+                    <label style="display:block; margin-bottom:5px; font-size:12px; color:#9aa0aa;">Durasi (Menit)</label>
+                    <input type="number" name="durasi" placeholder="120" style="width:100%; padding:10px; background:#0f1115; border:1px solid #2d323d; color:white; border-radius:5px;">
+                </div>
+                <div>
+                    <label style="display:block; margin-bottom:5px; font-size:12px; color:#9aa0aa;">Direktor</label>
+                    <input type="text" name="direktor" style="width:100%; padding:10px; background:#0f1115; border:1px solid #2d323d; color:white; border-radius:5px;">
+                </div>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label style="display:block; margin-bottom:5px; font-size:12px; color:#9aa0aa;">Link Poster (URL Pinterest/Lainnya)</label>
+                <input type="text" name="poster_film" required style="width:100%; padding:10px; background:#0f1115; border:1px solid #2d323d; color:white; border-radius:5px;">
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="display:block; margin-bottom:5px; font-size:12px; color:#9aa0aa;">Deskripsi Singkat</label>
+                <textarea name="deskripsi" rows="3" style="width:100%; padding:10px; background:#0f1115; border:1px solid #2d323d; color:white; border-radius:5px; resize:none;"></textarea>
+            </div>
+
+            <div style="display:flex; gap:10px;">
+                <button type="submit" style="flex:2; background:#4f7cff; color:white; border:none; padding:12px; border-radius:8px; font-weight:bold; cursor:pointer;">Simpan Ke Database</button>
+                <button type="button" onclick="closeModal()" style="flex:1; background:#333; color:white; border:none; padding:12px; border-radius:8px; cursor:pointer;">Batal</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openModal() {
+        document.getElementById('modalAddMovie').style.display = 'flex';
+    }
+    function closeModal() {
+        document.getElementById('modalAddMovie').style.display = 'none';
+    }
+</script>
 
 
 <nav class="bottom-nav">
   <a href="/home" class="active">Home</a>
-  <a href="/movies">Movies</a>
-  <a href="/tickets">Tickets</a>
+  <a href="/Search">Search</a>
+  <a href="/my-bookings">My Bookings</a>
   <a href="/profile">Profile</a>
 </nav>
 

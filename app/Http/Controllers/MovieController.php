@@ -123,5 +123,24 @@ public function search(Request $request)
 
     return view('search', compact('movies'));
 }
+public function store(Request $request)
+{
+    // Gunakan DB::table agar Laravel TIDAK otomatis mencari created_at/updated_at
+    \Illuminate\Support\Facades\DB::table('tabel_film')->insert([
+        'judul'       => $request->judul,
+        'genre'       => $request->genre,
+        'rating'      => $request->rating,
+        'durasi'      => $request->durasi,
+        'direktor'    => $request->direktor,
+        'deskripsi'   => $request->deskripsi,
+        'poster_film' => $request->poster_film,
+       
+    ]);
 
+    return redirect('/homeAdmin')->with('success', 'Film Moana 2 berhasil disimpan!');
+}
+public function destroy($id) {
+    DB::table('tabel_film')->where('id_film', $id)->delete();
+    return redirect('/Admin/homeAdmin');
+}
 }

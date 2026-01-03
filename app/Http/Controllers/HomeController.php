@@ -16,6 +16,8 @@ class HomeController extends Controller
     }
     
     public function admin() {
-        return view('/Admin/homeAdmin'); 
+        
+        $movies = DB::table('tabel_film')->get(); 
+        return view('Admin.homeAdmin', compact('movies')); 
     }
 }

@@ -10,6 +10,12 @@ use Illuminate\Http\Request;
 
 Route::get('/home', [HomeController::class, 'index']);
 Route::get('/homeAdmin', [HomeController::class, 'admin']);
+// Pastikan ini memanggil Controller (supaya data $movies tidak error)
+Route::get('/Admin/homeAdmin', [HomeController::class, 'admin']);
+
+// Tambahkan rute untuk fitur CRUD (Tambah & Hapus)
+Route::post('/movie/store', [MovieController::class, 'store'])->name('movie.store');
+Route::delete('/movie/destroy/{id}', [MovieController::class, 'destroy'])->name('movie.destroy');
 
 Route::get('/movieDetails/{id}', [MovieController::class, 'booking'])->name('movie.details');
 Route::get(
