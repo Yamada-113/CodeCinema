@@ -18,8 +18,14 @@
         <p><b>Movie:</b> {{ $booking['movie'] ?? '-' }}
         <p><b>Date:</b> {{ $booking['date'] }}</p>
         <p><b>Show Time:</b> {{ $booking['time'] }}</p>
+<<<<<<< HEAD
         <p><strong>Lokasi:</strong> {{ $booking['location'] }}</p>
         <p><b>Seats:</b> {{ implode(', ', $booking['seats'] ?? []) }}
+=======
+        <p><b>Location:</b> {{ $booking['location'] }}</p>
+        <p><b>Studio:</b> {{ $booking['studio'] }}</p>
+        <p><b>Seats:</b> {{ implode(', ', $booking['seats']) }}</p>
+>>>>>>> 9699ab1767a348a6db97c3df21d22d9e1745d1f8
         <p><b>Price / Seat:</b> Rp {{ number_format($booking['price']) }}</p>
 
         <hr style="border: 1px solid #777; margin: 8px 0;">
@@ -39,7 +45,7 @@
             @csrf
 
             {{-- hidden --}}
-            <input type="hidden" name="id_jadwal" value="{{ $jadwal->id_jadwal }}">
+            <input type="hidden" name="id_jadwal" value="{{ $booking['id_jadwal'] }}">
 
             @foreach($booking['seat_ids'] as $sid)
                 <input type="hidden" name="seats[]" value="{{ $sid }}">
@@ -63,11 +69,12 @@
                     required
                 >
 
-                @error('email')
-                    <div class="email-error">
-                        ⚠️ {{ $message }}
+                @if(session('error'))
+                    <div class="alert-error">
+                        ⚠️ {{ session('error') }}
                     </div>
-                @enderror
+                @endif
+
             </div>
 
             {{-- PAYMENT METHOD --}}

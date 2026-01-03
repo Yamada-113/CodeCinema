@@ -4,8 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\TiketController;
+use App\Http\Controllers\PaymentAndTicketController;
 use App\Http\Controllers\SeatsController;
 use Illuminate\Http\Request;
 
@@ -27,19 +26,25 @@ Route::get('/Admin/homeAdmin', function () {
     return view('Admin.homeAdmin');
 });
 
+Route::match(['GET','POST'], '/payment', [PaymentAndTicketController::class, 'payment'])
+    ->name('payment');
 
-// tampilkan halaman payment
-Route::post('/payment', [PaymentController::class, 'payment'])
-    ->name('payment.show');
-
-// proses pembayaran (VALIDASI ADA DI SINI)
-Route::post('/payment/process', [PaymentController::class, 'processPayment'])
+Route::post('/payment/process', [PaymentAndTicketController::class, 'processPayment'])
     ->name('payment.process');
 
-// halaman tiket setelah sukses
-Route::get('/payment/tiket/{id}', [TiketController::class, 'result'])
+Route::get('/payment/tiket/{paymentId}', [PaymentAndTicketController::class, 'tiket'])
     ->name('payment.tiket');
 
+<<<<<<< HEAD
 Route::get('/payment', [PaymentController::class, 'payment'])->name('payment.get');
 Route::get('/tiket', [TiketController::class, 'index'])->name('tiket.index');
+=======
+
+
+// Ganti /movies menjadi /search
+Route::get('/search', [MovieController::class, 'search'])->name('movies.search');
+Route::get('/my-bookings', function () {
+    return view('my-bookings');
+});
+>>>>>>> 9699ab1767a348a6db97c3df21d22d9e1745d1f8
 
