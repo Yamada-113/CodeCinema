@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Movie App - CodeCinema</title>
   <link rel="stylesheet" href="{{ asset('css/styleHomeAdmin.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/styleHome.css') }}">
 </head>
 <body>
 
@@ -14,7 +15,7 @@
     <h1>CodeCinema</h1>
   </div>
   <div class="header-right">
-    <a href="/login" class="btn-logout">Logout</a>
+    <a href="/logout" class="btn-logout">Logout</a>
     <span class="location">Jakarta ▼</span>
   </div>
 </header>
