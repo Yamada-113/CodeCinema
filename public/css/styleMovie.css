@@ -26,12 +26,9 @@ body {
   border-radius: 16px;
 }
 
-.movie-poster {
-    width: 100%;       /* Mengikuti lebar container-nya */
-    max-width: 350px;  /* Batas maksimal lebar agar tidak terlalu besar */
-    height: auto;
-    object-fit: cover;
-    border-radius: 15px;
+.poster {
+  width: 100%;
+  border-radius: 12px;
 }
 
 .meta {

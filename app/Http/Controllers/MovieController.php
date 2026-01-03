@@ -99,6 +99,7 @@ class MovieController extends Controller
         'date',
         'calendar',
         'times',
+        'jam',
         'seats'
     ));
 }
