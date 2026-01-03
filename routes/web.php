@@ -35,16 +35,6 @@ Route::post('/payment/process', [PaymentAndTicketController::class, 'processPaym
 Route::get('/payment/tiket/{paymentId}', [PaymentAndTicketController::class, 'tiket'])
     ->name('payment.tiket');
 
-<<<<<<< HEAD
 Route::get('/payment', [PaymentController::class, 'payment'])->name('payment.get');
 Route::get('/tiket', [TiketController::class, 'index'])->name('tiket.index');
-=======
-
-
-// Ganti /movies menjadi /search
-Route::get('/search', [MovieController::class, 'search'])->name('movies.search');
-Route::get('/my-bookings', function () {
-    return view('my-bookings');
-});
->>>>>>> 9699ab1767a348a6db97c3df21d22d9e1745d1f8
 
