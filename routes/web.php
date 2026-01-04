@@ -33,7 +33,7 @@ Route::get('/Admin/homeAdmin', function () {
 });
 
 Route::match(['GET','POST'], '/payment', [PaymentAndTicketController::class, 'payment'])
-    ->name('payment');
+->name('payment');
 
 Route::post('/payment/process', [PaymentAndTicketController::class, 'processPayment'])
     ->name('payment.process');

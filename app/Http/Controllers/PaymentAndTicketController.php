@@ -11,20 +11,21 @@ class PaymentAndTicketController extends Controller
 
     public function payment(Request $request)
 {
-    if (
-        !$request->filled(['id_studio', 'date', 'jam']) ||
-        !$request->has('seats')
-    ) {
-        return redirect()->back()
-            ->with('error', 'Silakan pilih kursi terlebih dahulu.');
+    // Ambil data dari request atau dari session (old input)
+    $id_studio = $request->input('id_studio', old('id_studio'));
+    $date = $request->input('date', old('date'));
+    $jam = $request->input('jam', old('jam'));
+    $seatIds = $request->input('seats', old('seats'));
+
+    // Cek apakah data ada
+    if (!$id_studio || !$date || !$jam || !$seatIds) {
+        return redirect('/')->with('error', 'Silakan pilih kursi terlebih dahulu.');
     }
 
-    $seatIds = $request->seats;
-
     $jadwal = DB::table('jadwal_tayang')
-        ->where('id_studio', $request->id_studio)
-        ->where('tanggal', $request->date)
-        ->where('jam_tayang', $request->jam)
+        ->where('id_studio', $id_studio)
+        ->where('tanggal', $date)
+        ->where('jam_tayang', $jam)
         ->first();
 
     $movie = DB::table('tabel_film')
@@ -47,7 +48,7 @@ class PaymentAndTicketController extends Controller
 
     $booking = [
         'id_jadwal' => $jadwal->id_jadwal,
-        'seat_ids'  => $seatIds,
+        'seat_ids'  => $seatIds, // Simpan array ID kursi di sini
         'movie'     => $movie->judul,
         'poster'    => $movie->poster_film,
         'date'      => $jadwal->tanggal,
