@@ -42,7 +42,7 @@ class LoginController extends Controller
                 'nama'  => 'Administrator',
             ]);
 
-            return redirect('/Admin/homeAdmin');
+            return redirect()->route('admin.home');
         }
 
         $request->validate([//Sang user
@@ -56,6 +56,12 @@ class LoginController extends Controller
             return back()->withErrors(['login' => 'Email atau password salah'])->withInput();
         }
     
-        return redirect('/home');
-    }
+       session([
+        'login' => true,
+        'role'  => 'user', 
+        'nama'  => $user->nama,
+    ]);
+
+    return redirect('/home');
+}
 }

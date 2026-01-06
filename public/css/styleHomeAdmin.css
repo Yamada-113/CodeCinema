@@ -251,3 +251,41 @@ body {
   font-size: 13px;
   color: #9aa0aa;
 }
+/* Pastikan ID ini punya style yang sama dengan modal Add */
+#modalEditMovie {
+    display: none; /* Awalnya sembunyi */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85); /* Efek gelap transparan */
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Kotak form di dalamnya */
+#modalEditMovie .modal-container {
+    background: #181b22;
+    padding: 25px;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 500px;
+    border: 1px solid #4f7cff;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* Style input agar sama dengan yang ada di modal Add */
+.modal-input {
+    width: 100%;
+    padding: 10px;
+    background: #0f1115;
+    border: 1px solid #2d323d;
+    color: white;
+    border-radius: 5px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+}

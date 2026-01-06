@@ -8,6 +8,9 @@ class HomeController extends Controller
 {
     public function index()
     {
+        if (session()->has('role') && session('role') === 'admin') {
+        return redirect()->route('admin.home');
+    }
         // Ambil semua data film dari database
         $movies = DB::table('tabel_film')->get(); 
 
@@ -17,7 +20,7 @@ class HomeController extends Controller
     
     public function admin() {
         
-        $movies = DB::table('tabel_film')->get(); 
+        $movies = DB::table('tabel_film')->get();
         return view('Admin.homeAdmin', compact('movies')); 
     }
 }

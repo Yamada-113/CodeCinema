@@ -157,9 +157,13 @@
 </section>
 
 <nav class="bottom-nav">
-  <a href="/home" class="active">Home</a>
-  <a href="/search">Search</a>
-  <a href="/my-bookings">My Bookings</a>
+  @if(session('role') === 'admin')
+        <a href="{{ route('admin.home') }}" class="{{ request()->is('homeAdmin') ? 'active' : '' }}">Home</a>
+    @else
+        <a href="/home" class="{{ request()->is('home') ? 'active' : '' }}">Home</a>
+    @endif
+
+    <a href="{{ route('movies.search') }}" class="{{ request()->is('search') ? 'active' : '' }}">Search</a>
   <a href="/profile">Profile</a>
 </nav>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

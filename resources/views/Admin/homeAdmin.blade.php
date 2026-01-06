@@ -37,8 +37,10 @@
                 <span class="duration">{{ $movie->durasi }} min</span>
             </div>
             <div class="crud-actions">
-                <button class="edit" onclick="openModal('edit', '{{ $movie->id_film }}')">Edit</button>
-                <form action="{{ route('movie.destroy', $movie->id_film) }}" method="POST" style="display:inline;">
+              <button type="button" class="edit" 
+              onclick="openEditModal('{{ $movie->id_film }}', '{{ addslashes($movie->judul) }}', '{{ $movie->genre }}', '{{ $movie->rating }}', '{{ $movie->poster_film }}', '{{ $movie->durasi }}', 
+              '{{ addslashes($movie->direktor) }}', '{{ addslashes($movie->deskripsi) }}')">Edit</button>
+                <form action="{{ route('movie.destroy', $movie->id_film)}}" method="POST" style="display:inline;">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="delete" onclick="return confirm('Hapus film ini?')">Hapus</button>
@@ -225,11 +227,91 @@
     }
 </script>
 
+<div id="modalEditMovie" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:9999; justify-content:center; align-items:center; padding:20px;">
+    
+    <div style="background:#181b22; padding:25px; border-radius:15px; width:100%; max-width:500px; border:1px solid #4f7cff; max-height: 90vh; overflow-y: auto;">
+        <h3 style="color:#4f7cff; margin-bottom:20px; text-align:center;">Edit Film</h3>
+        
+        <form id="formEditMovie" method="POST">
+            @csrf
+            @method('PUT')
+
+            <div style="margin-bottom: 15px;">
+                <label style="display:block; margin-bottom:5px; font-size:12px; color:#9aa0aa;">Judul Film</label>
+                <input type="text" name="judul" id="edit_judul" required style="width:100%; padding:10px; background:#0f1115; border:1px solid #2d323d; color:white; border-radius:5px;">
+            </div>
+
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:15px;">
+                <div>
+                    <label style="display:block; margin-bottom:5px; font-size:12px; color:#9aa0aa;">Genre</label>
+                    <input type="text" name="genre" id="edit_genre" style="width:100%; padding:10px; background:#0f1115; border:1px solid #2d323d; color:white; border-radius:5px;">
+                </div>
+                <div>
+                    <label style="display:block; margin-bottom:5px; font-size:12px; color:#9aa0aa;">Rating</label>
+                    <input type="text" name="rating" id="edit_rating" style="width:100%; padding:10px; background:#0f1115; border:1px solid #2d323d; color:white; border-radius:5px;">
+                </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:15px;">
+                <div>
+                    <label style="display:block; margin-bottom:5px; font-size:12px; color:#9aa0aa;">Durasi (Menit)</label>
+                    <input type="number" name="durasi" id="edit_durasi" style="width:100%; padding:10px; background:#0f1115; border:1px solid #2d323d; color:white; border-radius:5px;">
+                </div>
+                <div>
+                    <label style="display:block; margin-bottom:5px; font-size:12px; color:#9aa0aa;">Direktor</label>
+                    <input type="text" name="direktor" id="edit_direktor" style="width:100%; padding:10px; background:#0f1115; border:1px solid #2d323d; color:white; border-radius:5px;">
+                </div>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label style="display:block; margin-bottom:5px; font-size:12px; color:#9aa0aa;">Link Poster</label>
+                <input type="text" name="poster_film" id="edit_poster" required style="width:100%; padding:10px; background:#0f1115; border:1px solid #2d323d; color:white; border-radius:5px;">
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="display:block; margin-bottom:5px; font-size:12px; color:#9aa0aa;">Deskripsi Singkat</label>
+                <textarea name="deskripsi" id="edit_deskripsi" rows="3" style="width:100%; padding:10px; background:#0f1115; border:1px solid #2d323d; color:white; border-radius:5px; resize:none;"></textarea>
+            </div>
+
+            <div style="display:flex; gap:10px;">
+                <button type="submit" style="flex:2; background:#4f7cff; color:white; border:none; padding:12px; border-radius:8px; font-weight:bold; cursor:pointer;">Simpan Perubahan</button>
+                <button type="button" onclick="closeEditModal()" style="flex:1; background:#333; color:white; border:none; padding:12px; border-radius:8px; cursor:pointer;">Batal</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    function openEditModal(id, judul, genre, rating, poster, durasi, direktor, deskripsi) {
+        const modal = document.getElementById('modalEditMovie');
+        const form = document.getElementById('formEditMovie');
+
+        if (modal && form) {
+            form.action = '/movie/update/' + id;
+            document.getElementById('edit_judul').value = judul;
+            document.getElementById('edit_genre').value = genre;
+            document.getElementById('edit_rating').value = rating;
+            document.getElementById('edit_poster').value = poster;
+            document.getElementById('edit_durasi').value = durasi;
+            document.getElementById('edit_direktor').value = direktor;
+            document.getElementById('edit_deskripsi').value = deskripsi;
+            
+            modal.style.display = 'flex'; // Ini yang bikin ke tengah
+        }
+    }
+
+    function closeEditModal() {
+        document.getElementById('modalEditMovie').style.display = 'none';
+    }
+</script>
 
 <nav class="bottom-nav">
-  <a href="/home" class="active">Home</a>
-  <a href="/Search">Search</a>
-  <a href="/my-bookings">My Bookings</a>
+  @if(session('role') === 'admin')
+        <a href="{{ route('admin.home') }}" class="{{ request()->is('homeAdmin') ? 'active' : '' }}">Home</a>
+    @else
+        <a href="/home" class="{{ request()->is('home') ? 'active' : '' }}">Home</a>
+    @endif
+
+    <a href="{{ route('movies.search') }}" class="{{ request()->is('search') ? 'active' : '' }}">Search</a>
   <a href="/profile">Profile</a>
 </nav>
 

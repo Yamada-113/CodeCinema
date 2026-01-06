@@ -139,8 +139,40 @@ public function store(Request $request)
 
     return redirect('/homeAdmin')->with('success', 'Film Moana 2 berhasil disimpan!');
 }
+// Tambahkan fungsi ini di dalam class MovieController
+public function update(Request $request, $id)
+{
+    DB::table('tabel_film')->where('id_film', $id)->update([
+        'judul'       => $request->judul,
+        'genre'       => $request->genre,
+        'rating'      => $request->rating,
+        'durasi'      => $request->durasi,
+        'direktor'    => $request->direktor,
+        'deskripsi'   => $request->deskripsi,
+        'poster_film' => $request->poster_film,
+    ]);
+
+    return redirect()->route('admin.home')->with('success', 'Film berhasil diperbarui!');
+}
+public function edit($id)
+{
+    // Mengambil data film dari database berdasarkan ID yang diklik
+    $movie = DB::table('tabel_film')->where('id_film', $id)->first();
+    
+    if (!$movie) {
+        return redirect()->route('admin.home')->with('error', 'Film tidak ditemukan!');
+    }
+    return view('Admin.edit', compact('movie'));
+}
+// Perbaiki fungsi destroy agar redirect ke route name
 public function destroy($id) {
     DB::table('tabel_film')->where('id_film', $id)->delete();
-    return redirect('/Admin/homeAdmin');
+    return redirect()->route('admin.home')->with('success', 'Film berhasil dihapus!');
 }
+public function admin()
+{
+    $movies = DB::table('tabel_film')->get();
+    return view('Admin.homeAdmin', compact('movies'));
+}
+
 }
