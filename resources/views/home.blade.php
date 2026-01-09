@@ -75,85 +75,24 @@
 <section class="section">
   <h2>Coming Soon</h2>
   <div class="movie-row">
+    @foreach($comingSoonMovies as $movie)
     <div class="movie-card coming">
-      <img src="https://i.pinimg.com/1200x/e2/4f/47/e24f47ae328185e4fe30b80ca9e4650d.jpg" alt="Little Women">
-      <div class="movie-info">
-        <p class="title">Little Women</p>
-        <div class="meta">
-          <span class="age">SU</span>
-          <span class="duration">135 min</span>
-        </div>
-      </div>
+        <img src="{{ $movie->poster_film }}" alt="{{ $movie->judul }}">
+        <div class="movie-info">
+            <p class="title">{{ $movie->judul }}</p>
+            <div class="meta">
+                <span class="age">{{ $movie->rating }}</span>
+                <span class="duration">{{ $movie->durasi }} min</span>
+            </div>
+            </div>
     </div>
+    @endforeach
 
-    <div class="movie-card coming">
-      <img src="https://i.pinimg.com/736x/e9/0e/77/e90e77db90e904c3cfc9adffc37619e6.jpg" alt="Archer">
-      <div class="movie-info">
-        <p class="title">Archer</p>
-        <div class="meta">
-          <span class="age">SU</span>
-          <span class="duration">135 min</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="movie-card coming">
-      <img src="https://i.pinimg.com/1200x/9a/5a/b7/9a5ab7adee2fde79b08a8437204dad12.jpg" alt="Madame Web">
-      <div class="movie-info">
-        <p class="title">Madame Web</p>
-        <div class="meta">
-          <span class="age">SU</span>
-          <span class="duration">135 min</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="movie-card coming">
-      <img src="https://i.pinimg.com/736x/a1/55/ed/a155ed481d21f0537fcbb5fb63e5dbb5.jpg" alt="Paddington in Peru">
-      <div class="movie-info">
-        <p class="title">Paddington in Peru</p>
-        <div class="meta">
-          <span class="age">SU</span>
-          <span class="duration">135 min</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="movie-card coming">
-      <img src="https://i.pinimg.com/736x/03/a1/cd/03a1cd1bf9b53c5be5e904424c29a5db.jpg" alt="Exhuma">
-      <div class="movie-info">
-        <p class="title">Exhuma</p>
-        <div class="meta">
-          <span class="age">SU</span>
-          <span class="duration">135 min</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="movie-card coming">
-      <img src="https://i.pinimg.com/1200x/93/a6/f6/93a6f6f6e2fc495899c5ad23ded29aa1.jpg" alt="Satria Dewa Gatotkaca">
-      <div class="movie-info">
-        <p class="title">Satria Dewa Gatotkaca</p>
-        <div class="meta">
-          <span class="age">SU</span>
-          <span class="duration">135 min</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="movie-card coming">
-      <img src="https://i.pinimg.com/736x/c2/89/c2/c289c2d3ced72a5088c1e0bcc2ba9c68.jpg" alt="Sosok Ketiga Lintrik">
-      <div class="movie-info">
-        <p class="title">Sosok Ketiga Lintrik</p>
-        <div class="meta">
-          <span class="age">SU</span>
-          <span class="duration">135 min</span>
-        </div>
-      </div>
-    </div>
-
-
-    </div>
+    {{-- Tampilkan pesan jika tidak ada film coming soon --}}
+    @if($comingSoonMovies->isEmpty())
+        <p style="color: gray; margin-left: 20px;">Belum ada film yang akan datang.</p>
+    @endif
+  </div>
 </section>
 
 <nav class="bottom-nav">

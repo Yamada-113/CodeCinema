@@ -108,20 +108,26 @@ public function search(Request $request)
     $query = $request->input('query');
     $genre = $request->input('genre');
 
-    $movieQuery = DB::table('tabel_film');
+    // Pencarian untuk Now Playing
+    $movies = DB::table('tabel_film')
+        ->where('status', 'now_playing') // Kunci perbaikannya di sini
+        ->when($query, function ($q) use ($query) {
+            return $q->where('judul', 'like', "%{$query}%");
+        })
+        ->when($genre, function ($q) use ($genre) {
+            return $q->where('genre', 'like', "%{$genre}%");
+        })
+        ->get();
 
-    if ($query) {
-        $movieQuery->where('judul', 'LIKE', "%{$query}%");
-    }
+    // Pencarian untuk Coming Soon (Opsional, jika ingin ditampilkan juga saat search)
+    $comingSoonMovies = DB::table('tabel_film')
+        ->where('status', 'coming_soon')
+        ->when($query, function ($q) use ($query) {
+            return $q->where('judul', 'like', "%{$query}%");
+        })
+        ->get();
 
-    if ($genre) {
-        // Menggunakan LIKE %...% agar lebih "longgar" terhadap spasi atau typo kecil
-        $movieQuery->where('genre', 'LIKE', "%" . trim($genre) . "%");
-    }
-
-    $movies = $movieQuery->get();
-
-    return view('search', compact('movies'));
+    return view('search', compact('movies', 'comingSoonMovies'));
 }
 public function store(Request $request)
 {
@@ -134,6 +140,7 @@ public function store(Request $request)
         'direktor'    => $request->direktor,
         'deskripsi'   => $request->deskripsi,
         'poster_film' => $request->poster_film,
+        'status'      => $request->status,
        
     ]);
 
@@ -171,8 +178,13 @@ public function destroy($id) {
 }
 public function admin()
 {
-    $movies = DB::table('tabel_film')->get();
-    return view('Admin.homeAdmin', compact('movies'));
-}
+    // Ambil data film yang statusnya now_playing
+    $movies = DB::table('tabel_film')->where('status', 'now_playing')->get();
+    
+    // Ambil data film yang statusnya coming_soon (Ini yang bikin error kalau tidak ada)
+    $comingSoonMovies = DB::table('tabel_film')->where('status', 'coming_soon')->get();
 
+    // Kirim KEDUA variabel ke view
+    return view('Admin.homeAdmin', compact('movies', 'comingSoonMovies'));
+}
 }
