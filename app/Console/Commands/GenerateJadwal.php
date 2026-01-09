@@ -13,7 +13,7 @@ class GenerateJadwal extends Command
 
     public function handle()
     {
-        $filmId = DB::table('tabel_film')->pluck('id_film');;
+        $filmIds = DB::table('tabel_film')->pluck('id_film')->toArray();
         $studioIds = DB::table('tabel_studio')->pluck('id_studio');
 
         $showTimes = [
@@ -23,29 +23,45 @@ class GenerateJadwal extends Command
             ['jam' => '20:00:00', 'harga' => 60000],
         ];
 
-        foreach ($studioIds as $studioId) {
-            for ($i = 0; $i < 7; $i++) {
-                $tanggal = Carbon::now()->addDays($i)->toDateString();
+        foreach ($filmIds as $filmId) {
+            $randomFilmId = $filmIds[array_rand($filmIds)];
 
-                $exists = DB::table('jadwal_tayang')
-                    ->where('id_studio', $studioId)
-                    ->where('tanggal', $tanggal)
-                    ->exists();
+            DB::table('jadwal_tayang')->insert([
+                'id_film'     => $randomFilmId,
+                'id_studio'   => $studioId,
+                'tanggal'     => $tanggal,
+                'jam_tayang'  => $time['jam'],
+                'harga_tiket' => $time['harga'],
+            ]);
+            
+            foreach ($studioIds as $studioId) {
 
-                if ($exists) continue;
+                for ($i = 0; $i < 7; $i++) {
+                    $tanggal = Carbon::now()->addDays($i)->toDateString();
 
-                foreach ($showTimes as $time) {
-                    DB::table('jadwal_tayang')->insert([
-                        'id_film'     => $filmId,
-                        'id_studio'   => $studioId,
-                        'tanggal'     => $tanggal,
-                        'jam_tayang'  => $time['jam'],
-                        'harga_tiket' => $time['harga'],
-                    ]);
+                    foreach ($showTimes as $time) {
+
+                        $exists = DB::table('jadwal_tayang')
+                            ->where('id_film', $filmId)
+                            ->where('id_studio', $studioId)
+                            ->where('tanggal', $tanggal)
+                            ->where('jam_tayang', $time['jam'])
+                            ->exists();
+
+                        if ($exists) continue;
+
+                        DB::table('jadwal_tayang')->insert([
+                            'id_film'     => $filmId,
+                            'id_studio'   => $studioId,
+                            'tanggal'     => $tanggal,
+                            'jam_tayang'  => $time['jam'],
+                            'harga_tiket' => $time['harga'],
+                        ]);
+                    }
                 }
             }
         }
 
-        $this->info('Jadwal 7 hari berhasil digenerate');
+        $this->info('Jadwal tayang 7 hari ke depan berhasil digenerate');
     }
 }

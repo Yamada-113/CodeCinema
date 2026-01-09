@@ -99,7 +99,9 @@
   @forelse ($calendar as $c)
     <a
       class="date-box {{ !$studioId ? 'disabled' : '' }} {{ $date === $c['full_date'] ? 'active' : '' }}"
-      href="{{ $studioId ? '?id_lokasi='.$cinemaId.'&id_studio='.$studioId.'&date='.$c['full_date'] : '#' }}">
+      href="{{ $studioId 
+      ? '?id_film='.$filmId.'&id_lokasi='.$cinemaId.'&id_studio='.$studioId.'&date='.$c['full_date'] 
+      : '#' }}">
       <span class="day">{{ $c['day'] }}</span>
       <span class="date">{{ $c['date'] }}</span>
     </a>
@@ -123,7 +125,9 @@
   @forelse($times as $t)
     <a
       class="time-box {{ !$date ? 'disabled' : '' }} {{ request('jam') === $t->jam_tayang ? 'active' : '' }}"
-      href="{{ ($studioId && $date) ? '?id_lokasi='.$cinemaId.'&id_studio='.$studioId.'&date='.$date.'&jam='.$t->jam_tayang : '#' }}">
+      href="{{ ($studioId && $date) 
+      ? '?id_film='.$filmId.'&id_lokasi='.$cinemaId.'&id_studio='.$studioId.'&date='.$date.'&jam='.$t->jam_tayang 
+      : '#' }}">
       {{ $t->jam_tayang }} | Rp{{ number_format($t->harga_tiket) }}
     </a>
   @empty
@@ -143,9 +147,10 @@
     <div class="screen">SCREEN</div>
 
     <!-- SEATS -->
-<form action="/payment" method="POST" id="bookingForm">
+<form action="{{ route('payment.get') }}" method="GET" id="bookingForm">
    {{ csrf_field() }}
   <!-- Kirim query lain sebagai hidden -->
+  <input type="hidden" name="id_film" value="{{ $filmId }}">
   <input type="hidden" name="id_lokasi" value="{{ request('id_lokasi') }}">
   <input type="hidden" name="id_studio" value="{{ request('id_studio') }}">
   <input type="hidden" name="date" value="{{ request('date') }}">

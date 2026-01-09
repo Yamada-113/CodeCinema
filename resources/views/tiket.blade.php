@@ -19,27 +19,27 @@
             <h1 class="movie-title">{{ $ticket->judul }}</h1>
 
             <div class="info-row">
-                <span>Date</span>
+                <span>Date:</span>
                 <strong>{{ $ticket->tanggal }}</strong>
             </div>
 
             <div class="info-row">
-                <span>Time</span>
+                <span>Time:</span>
                 <strong>{{ $ticket->jam_tayang }}</strong>
             </div>
 
             <div class="info-row">
-                <span>Location</span>
+                <span>Location:</span>
                 <strong>{{ $ticket->nama_lokasi }}</strong>
             </div>
 
             <div class="info-row">
-                <span>Studio</span>
+                <span>Studio:</span>
                 <strong>{{ $ticket->nama_studio }}</strong>
             </div>
 
         <div class="info-row">
-            <span>Seats</span>
+            <span>Seats:</span>
             <strong>
                 {{ implode(', ', $seats) }}
             </strong>

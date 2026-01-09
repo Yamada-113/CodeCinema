@@ -2,35 +2,48 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 class SeatsDatabase extends Seeder
 {
-    use WithoutModelEvents;
+    public function run()
+    {
+        // Daftar baris (A-H misal)
+        $rows = range('A', 'H'); 
+        $seatCount = 16; // 16 kursi per baris
 
-    public function run(): void {
+        // Ambil semua studio beserta id_lokasi
+        $studios = DB::table('tabel_studio')
+            ->select('id_studio', 'id_lokasi')
+            ->get();
 
-        $rows = ['H','G','F','E','D','C','B','A'];
+        foreach ($studios as $studio) {
+            $studioId  = $studio->id_studio;
+            $lokasiId  = $studio->id_lokasi;
 
-        foreach ($rows as $row) {
-            for ($seat = 1; $seat <= 24; $seat++) {
-                DB::table('tabel_kursi')->insert([
-                    'id_studio'   => 1,
-                    'nomor_kursi' => $seat,
-                    'baris_kursi'    => $row,
-                    'status'      => 'available'
-                ]);
+            foreach ($rows as $row) {
+                for ($num = 1; $num <= $seatCount; $num++) {
+                    // Cek dulu, kalau kursi sudah ada skip
+                    $exists = DB::table('tabel_kursi')
+                        ->where('id_studio', $studioId)
+                        ->where('baris_kursi', $row)
+                        ->where('nomor_kursi', $num)
+                        ->exists();
+
+                    if (!$exists) {
+                        DB::table('tabel_kursi')->insert([
+                            'id_studio'   => $studioId,
+                            'id_lokasi'   => $lokasiId, // pastikan ada lokasi
+                            'baris_kursi' => $row,
+                            'nomor_kursi' => $num,
+                            'status'      => 'available', // default
+                        ]);
+                    }
+                }
             }
         }
 
-        DB::table('tabel_kursi')
-        ->where('id_studio', 1)
-        ->inRandomOrder()
-        ->limit(6)
-        ->update(['status' => 'taken']);
-
+        $this->command->info('Seeder kursi dengan id_lokasi selesai dijalankan!');
     }
 }
