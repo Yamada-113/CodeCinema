@@ -35,7 +35,7 @@
   <span class="{{ $studioId ? 'active' : '' }}">Studio</span>
   <span class="{{ $date ? 'active' : '' }}">Tanggal</span>
   <span class="{{ request('jam') ? 'active' : '' }}">Jam</span>
-  <span class="{{ $seats ? 'active' : '' }}">Kursi</span>
+  <span class="{{ request('jam') ? 'active' : '' }}">Kursi</span>
 </div>
 
 
@@ -148,7 +148,7 @@
 
     <!-- SEATS -->
 <form action="{{ route('payment.get') }}" method="GET" id="bookingForm">
-   {{ csrf_field() }}
+
   <!-- Kirim query lain sebagai hidden -->
   <input type="hidden" name="id_film" value="{{ $filmId }}">
   <input type="hidden" name="id_lokasi" value="{{ request('id_lokasi') }}">

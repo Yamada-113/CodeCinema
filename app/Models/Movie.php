@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Http\Controllers\JadwalController;
 
 class Movie extends Model
 {
@@ -23,7 +24,13 @@ class Movie extends Model
         'durasi', 
         'direktor', 
         'deskripsi', 
-        'poster_film'
+        'poster_film',
+        'status'
     ];
+
+    public function jadwalTayang()
+    {
+        return $this->hasMany(JadwalTayang::class, 'id_film', 'id_film');
+    }
 
 }

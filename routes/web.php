@@ -52,3 +52,22 @@ Route::get('/generate-seats', [SeatController::class, 'copySeatsToAllStudiosFast
 
 // ================= PROFILE =================
 Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+
+use App\Http\Controllers\JadwalController;
+
+// ================= JADWAL =================
+//USER
+Route::get('/jadwal/{id_film}', [JadwalController::class, 'getJadwalByFilm']);
+
+// ADMIN
+Route::get('/admin/film/{id}/jadwal', 
+    [JadwalController::class, 'index']
+)->name('admin.jadwal');
+
+Route::post('/admin/jadwal/store',
+    [JadwalController::class, 'store']
+)->name('admin.jadwal.store');
+
+Route::delete('/admin/jadwal/{id}',
+    [JadwalController::class, 'destroy']
+)->name('admin.jadwal.delete');

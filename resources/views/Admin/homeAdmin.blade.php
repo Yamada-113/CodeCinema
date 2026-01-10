@@ -44,6 +44,11 @@
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="delete" onclick="return confirm('Hapus film ini?')">Hapus</button>
+                    
+                    <button type="button" class="schedule"
+                        onclick="openJadwalModal('{{ $movie->id_film }}', '{{ addslashes($movie->judul) }}')">
+                        Atur Jadwal
+                    </button>
                 </form>
             </div>
         </div>
@@ -146,6 +151,59 @@
     </div>
 </div>
 
+<div id="modalJadwal" class="modal-jadwal">
+  <div class="modal-box">
+
+    <h3>Atur Jadwal Film</h3>
+    <p class="subtitle" id="judulFilmJadwal"></p>
+
+    <form action="{{ route('admin.jadwal.store') }}" method="POST">
+      @csrf
+      <input type="hidden" name="id_film" id="jadwal_id_film">
+
+      <div class="form-group">
+        <label>Lokasi</label>
+        <select name="id_lokasi" required>
+          <option value="1">Mall Taman Anggrek</option>
+          <option value="2">Grand Indonesia</option>
+          <option value="3">Mall Of Indonesia</option>
+          <option value="4">Green Pramuka Mall</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Studio</label>
+        <select name="id_studio" required>
+          <option value="1">Regular</option>
+          <option value="2">The Premiere</option>
+          <option value="3">IMAX</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Jam Tayang</label>
+        <input type="time" name="jam_tayang" required>
+      </div>
+
+      <div class="form-group">
+        <label>Harga Tiket</label>
+        <input type="number" name="harga_tiket" placeholder="50000" required>
+      </div>
+
+      <div class="modal-actions">
+        <button type="submit" class="btn-primary">
+          Simpan Jadwal
+        </button>
+        <button type="button" onclick="closeJadwalModal()" class="btn-secondary">
+          Batal
+        </button>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+
 <script>
     function openModal() {
         document.getElementById('modalAddMovie').style.display = 'flex';
@@ -154,6 +212,19 @@
         document.getElementById('modalAddMovie').style.display = 'none';
     }
 </script>
+
+<script>
+function openJadwalModal(idFilm, judul) {
+    document.getElementById('modalJadwal').style.display = 'flex';
+    document.getElementById('jadwal_id_film').value = idFilm;
+    document.getElementById('judulFilmJadwal').innerText = judul;
+}
+
+function closeJadwalModal() {
+    document.getElementById('modalJadwal').style.display = 'none';
+}
+</script>
+
 
 <div id="modalEditMovie" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:9999; justify-content:center; align-items:center; padding:20px;">
     
