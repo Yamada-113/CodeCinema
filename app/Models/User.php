@@ -45,4 +45,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    
+
+    // Mengambil data dari database tabel_user
+    protected $table = 'tabel_user'; 
+    protected $primaryKey = 'id_user';
 }
+

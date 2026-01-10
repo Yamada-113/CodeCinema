@@ -1,0 +1,184 @@
+/* RESET RINGAN */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #e5e7eb;
+}
+
+/* =========================
+   WRAPPER & BACKGROUND
+========================= */
+.profile-wrapper {
+    padding: 70px 32px 150px;
+    background:
+        radial-gradient(900px 400px at 15% -10%, rgba(59,130,246,0.25), transparent),
+        radial-gradient(600px 300px at 85% 20%, rgba(14,165,233,0.18), transparent),
+        linear-gradient(180deg, #020617, #020617);
+}
+
+/* =========================
+   GRID LAYOUT (DESKTOP)
+========================= */
+.profile-desktop {
+    max-width: 1200px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 48px;
+}
+
+/* =========================
+   LEFT CARD (PROFILE)
+========================= */
+.profile-left {
+    position: relative;
+    background: linear-gradient(
+        180deg,
+        rgba(17,24,39,0.95),
+        rgba(2,6,23,0.95)
+    );
+    border-radius: 22px;
+    padding: 40px 36px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.12);
+    box-shadow:
+        0 40px 80px rgba(0,0,0,0.55),
+        inset 0 1px 0 rgba(255,255,255,0.06);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Ambient glow */
+.profile-left::before {
+    content: "";
+    position: absolute;
+    inset: -40%;
+    background: radial-gradient(circle, rgba(59,130,246,0.22), transparent 60%);
+    pointer-events: none;
+}
+
+/* AVATAR */
+.avatar {
+    width: 108px;
+    height: 108px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at top left, #60a5fa, #2563eb);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    font-weight: 800;
+    color: #fff;
+    box-shadow:
+        0 0 0 6px rgba(59,130,246,0.15),
+        0 18px 40px rgba(59,130,246,0.45);
+}
+
+.profile-left h2 {
+    font-size: 24px;
+    margin: 6px 0 4px;
+}
+
+.profile-left .email {
+    font-size: 14px;
+    color: #9ca3af;
+}
+
+/* STATUS BADGE */
+.account-badge {
+    display: inline-block;
+    margin-top: 18px;
+    padding: 7px 18px;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #2563eb, #38bdf8);
+    color: #020617;
+    box-shadow: 0 6px 20px rgba(56,189,248,0.45);
+}
+
+/* =========================
+   RIGHT CARD (DETAILS)
+========================= */
+.profile-right {
+    background: linear-gradient(
+        180deg,
+        rgba(2,6,23,0.95),
+        rgba(15,23,42,0.9)
+    );
+    border-radius: 22px;
+    padding: 44px;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow:
+        0 40px 90px rgba(0,0,0,0.6),
+        inset 0 1px 0 rgba(255,255,255,0.04);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* SECTION HEADER */
+.section-header {
+    margin-bottom: 32px;
+}
+
+.section-header h3 {
+    font-size: 23px;
+    letter-spacing: 0.3px;
+}
+
+.section-header .subtitle {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: #64748b;
+}
+
+/* INFO LIST */
+.info-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    padding: 18px 6px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    transition: all 0.25s ease;
+}
+
+.info-item span {
+    font-size: 14px;
+    color: #94a3b8;
+}
+
+.info-item strong {
+    font-size: 15px;
+    color: #e5e7eb;
+}
+
+/* HOVER ITEM */
+.info-item:hover {
+    background: rgba(59,130,246,0.08);
+    border-radius: 12px;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+/* =========================
+   CARD HOVER EFFECT
+========================= */
+.profile-left:hover,
+.profile-right:hover {
+    transform: translateY(-6px);
+}
+
+/* =========================
+   RESPONSIVE (OPTIONAL)
+========================= */
+@media (max-width: 900px) {
+    .profile-desktop {
+        grid-template-columns: 1fr;
+    }
+}

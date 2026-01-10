@@ -7,6 +7,10 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TiketController;
 use App\Http\Controllers\SeatController;
+use App\Http\Controllers\PaymentAndTicketController;
+use App\Http\Controllers\SeatsController;
+use App\Http\Controllers\ProfileController;
+use Illuminate\Http\Request;
 
 // ================= HOME =================
 Route::get('/home', [HomeController::class, 'index']);
@@ -44,3 +48,7 @@ Route::get('/payment/tiket/{paymentId}', [TiketController::class, 'result'])
 Route::get('/search', [MovieController::class, 'search'])->name('movies.search');
 
 Route::get('/generate-seats', [SeatController::class, 'copySeatsToAllStudiosFast']);
+// Di routes/web.php
+
+// ================= PROFILE =================
+Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
