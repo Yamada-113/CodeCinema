@@ -15,7 +15,7 @@
     <h1>CodeCinema</h1>
   </div>
   <div class="header-right">
-    <a href="/logout" class="btn-logout">Logout</a>
+    <a href="/login" class="btn-logout">Logout</a>
     <span class="location">Jakarta ▼</span>
   </div>
 </header>
