@@ -1,8 +1,19 @@
+@php
+    // Tentukan nama yang ditampilkan (admin & user aman)
+    $displayName = $user->nama
+        ?? $user->nama_lengkap
+        ?? $user->name
+        ?? 'User';
+
+    // Ambil huruf pertama untuk avatar
+    $initial = strtoupper(substr($displayName, 0, 1));
+@endphp
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Profile - {{ $user->nama }}</title>
+    <title>Profile - {{ $displayName }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="{{ asset('css/styleProfile.css') }}">
@@ -14,17 +25,21 @@
 
     <div class="profile-desktop">
 
+        {{-- BAGIAN KIRI --}}
         <div class="profile-left">
             <div class="avatar">
-                {{ strtoupper(substr($user->nama, 0, 1)) }}
+                {{ $initial }}
             </div>
 
-            <h2>{{ $user->nama }}</h2>
+            <h2>{{ $displayName }}</h2>
             <p class="email">{{ $user->email }}</p>
 
-            <span class="account-badge">Active Account</span>
+            <span class="account-badge {{ $user->role === 'admin' ? 'admin' : 'user' }}">
+                {{ $user->role === 'admin' ? 'Admin Account' : 'Active Account' }}
+            </span>
         </div>
 
+        {{-- BAGIAN KANAN --}}
         <div class="profile-right">
             <div class="section-header">
                 <h3>Informasi Akun</h3>
@@ -33,7 +48,7 @@
 
             <div class="info-item">
                 <span>Nama Lengkap</span>
-                <strong>{{ $user->nama }}</strong>
+                <strong>{{ $displayName }}</strong>
             </div>
 
             <div class="info-item">
@@ -43,7 +58,7 @@
 
             <div class="info-item">
                 <span>Nomor WhatsApp</span>
-                <strong>{{ $user->no_hp }}</strong>
+                <strong>{{ $user->no_hp ?? '-' }}</strong>
             </div>
         </div>
 
@@ -53,10 +68,14 @@
 
 {{-- NAVBAR BAWAH --}}
 <nav class="bottom-nav">
+  @if(session('role') === 'admin')
+    <a href="/homeAdmin">Home</a>
+    <a href="/booking-history">Booking History</a> 
+  @else
     <a href="/home">Home</a>
     <a href="/search">Search</a>
-    <a href="/profile" class="active">Profile</a>
-</nav>
+  @endif
+  <a href="/profile" class="active">Profile</a>
 
 </body>
 </html>

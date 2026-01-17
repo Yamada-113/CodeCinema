@@ -1,59 +1,350 @@
-/* Styling untuk Halaman Search/Explore */
+/* =============================== */
+/* Global Reset & Font             */
+/* =============================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
 
 body {
-    background-color: #000;
-    color: white;
+  background: #0f1115;
+  color: #fff;
+  padding-bottom: 80px; /* ruang untuk bottom nav */
 }
 
-.search-wrapper {
-    margin-top: 80px; /* Memberi jarak agar tidak tertutup topbar */
+/* =============================== */
+/* Top Bar                         */
+/* =============================== */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: #0f1115;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
-.search-input {
-    background-color: #1a1a1a !important;
-    border: 1px solid #333 !important;
-    color: white !important;
-    border-radius: 8px;
+.topbar h1 {
+  font-size: 20px;
+  color: #4f7cff;
 }
 
-.search-input:focus {
-    border-color: #e50914 !important; /* Warna merah ala Netflix/Cinema */
-    box-shadow: 0 0 5px rgba(229, 9, 20, 0.5);
+/* =============================== */
+/* Search & Filter                 */
+/* =============================== */
+.filter-container {
+  padding: 0 16px;
+  margin-bottom: 20px;
 }
 
-.genre-link {
-    text-decoration: none;
-    transition: transform 0.2s;
+.filter-container .form-control {
+  width: 100%;
+  border: 1px solid #444;
+  padding: 12px 15px;
+  border-radius: 8px;
+  background-color: #1a1a1a !important;
+  color: #fff !important;
 }
 
-.genre-link:hover {
-    transform: scale(1.05);
+.filter-container .form-control:focus {
+  background-color: #1a1a1a !important;
+  border-color: #4f7cff !important;
+  box-shadow: 0 0 5px rgba(79,124,255,0.3) !important;
+  outline: none;
+  color: #fff !important;
 }
 
 .badge {
-    padding: 10px 18px;
-    font-weight: 500;
+  padding: 8px 16px;
+  font-weight: 500;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
-/* Memastikan baris film tetap rapi di halaman search */
+.badge:hover {
+  transform: scale(1.05);
+}
+
+/* =============================== */
+/* Movie Row & Cards               */
+/* =============================== */
 .movie-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: flex-start;
-    padding: 10px;
-}
-.filter-container .form-control {
-    width: 100%; /* Memastikan kotak selebar layar */
-    border: 1px solid #444;
-    padding: 12px 20px;
-    border-radius: 8px;
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 0 16px 16px 16px;
 }
 
-/* Menghilangkan garis biru saat diklik agar tetap gelap */
-.form-control:focus {
-    background-color: #1a1a1a !important;
-    border-color: #ff0000 !important;
-    box-shadow: none !important;
-    color: white;
+.movie-row::-webkit-scrollbar {
+  display: none;
+}
+
+.movie-card {
+  width: 180px;
+  min-width: 180px;
+  background: #181b22;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.movie-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(79,124,255,0.3);
+}
+
+.movie-card img {
+  width: 100%;
+  aspect-ratio: 2/3;
+  object-fit: cover;
+}
+
+.movie-info {
+  padding: 10px;
+  text-align: center;
+}
+
+.movie-info .title {
+  font-size: 15px;
+  font-weight: bold;
+  margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.movie-info .meta {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #9aa0aa;
+  margin-bottom: 10px;
+}
+
+.age {
+  background: #ff3d3d;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.duration {
+  color: #9aa0aa;
+}
+
+/* =============================== */
+/* Admin / User Buttons            */
+/* =============================== */
+.movie-info .watch,
+.movie-info .edit,
+.movie-info .delete,
+.movie-info .schedule {
+  display: block;
+  width: 100%;
+  margin-bottom: 6px;
+  padding: 6px 0;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 6px;
+  text-decoration: none;
+  cursor: pointer;
+  text-align: center;
+  border: none;
+}
+
+.movie-info .watch {
+  background: #e50914;
+  color: #fff;
+}
+
+.movie-info .watch:hover {
+  background: #ff1414;
+}
+
+.movie-info .edit {
+  background: rgba(79,124,255,0.1);
+  color: #4f7cff;
+  border: 1px solid #4f7cff;
+}
+
+.movie-info .edit:hover {
+  background: #4f7cff;
+  color: #fff;
+}
+
+.movie-info .delete {
+  background: rgba(255,61,61,0.1);
+  color: #ff3d3d;
+  border: 1px solid #ff3d3d;
+}
+
+.movie-info .delete:hover {
+  background: #ff3d3d;
+  color: #fff;
+}
+
+.movie-info .schedule {
+  background: transparent;
+  border: 1px solid #4f7cff;
+  color: #4f7cff;
+}
+
+.movie-info .schedule:hover {
+  background: #4f7cff;
+  color: #fff;
+}
+
+.movie-card.coming {
+  opacity: 0.85;
+}
+
+/* =============================== */
+/* Modal Styling                   */
+/* =============================== */
+.modal-jadwal,
+#modalEditMovie {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.modal-jadwal .modal-box,
+#modalEditMovie .modal-container {
+  background: #181b22;
+  padding: 25px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 460px;
+  border: 1px solid #4f7cff;
+  box-shadow: 0 0 35px rgba(79,124,255,0.2);
+}
+
+.modal-jadwal.show,
+#modalEditMovie.show {
+  display: flex;
+}
+
+.modal-jadwal h3,
+#modalEditMovie h3 {
+  color: #4f7cff;
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.modal-jadwal .subtitle,
+#modalEditMovie .subtitle {
+  text-align: center;
+  color: #9aa0aa;
+  font-size: 13px;
+  margin-bottom: 14px;
+}
+
+.modal-jadwal label,
+#modalEditMovie label {
+  font-size: 12px;
+  color: #9aa0aa;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.modal-jadwal input,
+.modal-jadwal select,
+#modalEditMovie input,
+#modalEditMovie select,
+#modalEditMovie textarea {
+  width: 100%;
+  padding: 11px;
+  background: #0f1115;
+  border: 1px solid #2d323d;
+  color: #fff;
+  border-radius: 8px;
+}
+
+.modal-jadwal input:focus,
+.modal-jadwal select:focus,
+#modalEditMovie input:focus,
+#modalEditMovie select:focus,
+#modalEditMovie textarea:focus {
+  outline: none;
+  border-color: #4f7cff;
+}
+
+/* Modal actions */
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.modal-actions button {
+  flex: 1;
+  height: 44px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.modal-actions .btn-primary {
+  background: linear-gradient(135deg, #4f7cff, #365fcc);
+  color: white;
+  border: none;
+}
+
+.modal-actions .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 22px rgba(79,124,255,0.5);
+}
+
+.modal-actions .btn-secondary {
+  background: linear-gradient(135deg, #2a2f3a, #1f232c);
+  color: #e5e7eb;
+  border: 1px solid #2d323d;
+}
+
+.modal-actions .btn-secondary:hover {
+  background: linear-gradient(135deg, #3a3f4a, #2a2f3a);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* =============================== */
+/* Bottom Navigation               */
+/* =============================== */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #181b22;
+  display: flex;
+  justify-content: space-around;
+  padding: 15px 0;
+  border-top: 1px solid #2d323d;
+  z-index: 1000;
+}
+
+.bottom-nav a {
+  color: #9aa0aa;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.bottom-nav a.active {
+  color: white;
+  font-weight: bold;
 }

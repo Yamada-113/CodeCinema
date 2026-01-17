@@ -63,7 +63,10 @@
 
     </div>
     <div class="back-home">
-    <a href= "/home" class="btn-home">
+    <a href="{{ session('role') === 'admin' 
+            ? route('admin.booking.history') 
+            : url('/home') }}" 
+        class="btn-home">
         Kembali
     </a>
     </div>

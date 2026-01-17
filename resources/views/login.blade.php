@@ -43,6 +43,10 @@
       <div class="extra">
         <span>Don’t have an account?</span>
         <a href="/register">Register</a>
+        <br>
+        <a href="{{ route('password.request') }}" class="forgot-password">
+          Forgot password?
+        </a>
       </div>
     </form>
   </div>

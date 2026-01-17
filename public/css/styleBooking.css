@@ -1,0 +1,64 @@
+body {
+    background-color: #0f172a;
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+.history-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-bottom: 80px;
+}
+
+h2 {
+    color: white;
+    border-left: 4px solid #6366f1;
+    padding-left: 15px;
+    margin-bottom: 30px;
+}
+
+.table-card {
+    background: #1e293b;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+}
+
+.cinema-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.cinema-table th {
+    background-color: #334155;
+    color: #94a3b8;
+    text-transform: uppercase;
+    font-size: 12px;
+    padding: 15px;
+}
+
+.cinema-table td {
+    padding: 15px;
+    border-bottom: 1px solid #334155;
+}
+
+.status-completed {
+    background: rgba(34, 197, 94, 0.2);
+    color: #4ade80;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.btn-detail {
+    background: #6366f1;
+    color: white;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+}

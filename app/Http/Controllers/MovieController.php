@@ -106,6 +106,7 @@ class MovieController extends Controller
         'seats'
     ));
 }
+
 public function search(Request $request)
 {
     $query = $request->input('query');
@@ -132,6 +133,7 @@ public function search(Request $request)
 
     return view('search', compact('movies', 'comingSoonMovies'));
 }
+
 public function store(Request $request)
 {
     // Gunakan DB::table agar Laravel TIDAK otomatis mencari created_at/updated_at
@@ -179,6 +181,7 @@ public function destroy($id) {
     DB::table('tabel_film')->where('id_film', $id)->delete();
     return redirect()->route('admin.home')->with('success', 'Film berhasil dihapus!');
 }
+
 public function admin()
 {
     // Film now playing
@@ -206,5 +209,36 @@ public function admin()
         'lokasis',
         'studios'
     ));
+}
+
+public function bookingHistory()
+{
+    $history = DB::table('tabel_pemesanan')
+        ->join('tabel_detail_pemesanan', 'tabel_pemesanan.id_pemesanan', '=', 'tabel_detail_pemesanan.id_pemesanan')
+        ->join('tabel_pembayaran', 'tabel_pemesanan.id_pembayaran', '=', 'tabel_pembayaran.id_pembayaran')
+        ->join('tabel_user', 'tabel_pembayaran.email', '=', 'tabel_user.email')
+        ->join('jadwal_tayang', 'tabel_pemesanan.id_jadwal', '=', 'jadwal_tayang.id_jadwal')
+        ->join('tabel_film', 'jadwal_tayang.id_film', '=', 'tabel_film.id_film')
+        ->select(
+            'tabel_pemesanan.id_pembayaran',
+            'tabel_user.nama as customer_name',
+            'tabel_film.judul as movie_title',
+            'tabel_pembayaran.tanggal_bayar as tanggal',
+            'jadwal_tayang.harga_tiket as harga_satuan', 
+            DB::raw('GROUP_CONCAT(tabel_detail_pemesanan.id_kursi SEPARATOR ", ") as daftar_kursi'),
+            // PERBAIKAN: Hitung total harga (jumlah tiket * harga satuan)
+            DB::raw('COUNT(tabel_detail_pemesanan.id_detail) * jadwal_tayang.harga_tiket as total_harga')
+        )
+        ->groupBy(
+            'tabel_pemesanan.id_pembayaran', 
+            'tabel_user.nama', 
+            'tabel_film.judul', 
+            'tabel_pembayaran.tanggal_bayar',
+            'jadwal_tayang.harga_tiket'
+        )
+        ->orderBy('tabel_pembayaran.tanggal_bayar', 'desc')
+        ->get();
+
+    return view('Admin.bookingHistory', compact('history'));
 }
 }

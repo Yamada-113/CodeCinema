@@ -339,7 +339,7 @@ function closeJadwalModal() {
         <a href="/home" class="{{ request()->is('home') ? 'active' : '' }}">Home</a>
     @endif
 
-    <a href="{{ route('movies.search') }}" class="{{ request()->is('search') ? 'active' : '' }}">Search</a>
+    <a href = "/booking-history">Booking History</a>
   <a href="/profile">Profile</a>
 </nav>
 

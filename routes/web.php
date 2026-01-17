@@ -7,6 +7,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TiketController;
 use App\Http\Controllers\SeatController;
+use App\Http\Controllers\BookingHistoryController;
 use App\Http\Controllers\PaymentAndTicketController;
 use App\Http\Controllers\SeatsController;
 use App\Http\Controllers\ProfileController;
@@ -71,3 +72,15 @@ Route::post('/admin/jadwal/store',
 Route::delete('/admin/jadwal/{id}',
     [JadwalController::class, 'destroy']
 )->name('admin.jadwal.delete');
+
+// FORGOT PASSWORD
+Route::get('/forgot-password', [LoginController::class, 'forgotPasswordForm'])
+    ->name('password.request');
+
+Route::post('/forgot-password', [LoginController::class, 'resetPassword'])
+    ->name('password.update');
+    
+// ================= BOOKING HISTORY =================
+Route::get('/admin/booking-history', [MovieController::class, 'bookingHistory'])
+    ->name('admin.booking.history');
+Route::get('/booking-history', [BookingHistoryController::class, 'index']);

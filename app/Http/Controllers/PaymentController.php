@@ -76,7 +76,7 @@ class PaymentController extends Controller
                 'date'      => $jadwal->tanggal,
                 'time'      => $jadwal->jam_tayang,
                 'location'  => $location->nama_lokasi ?? '-',
-                'price'     => $jadwal->harga ?? 50000,
+                'price'     => $jadwal->harga_tiket ?? 50000,
                 'seats'     => $seatLabels,
                 'seat_ids'  => $seatIds,
                 'id_film'   => $movie->id_film,
