@@ -181,13 +181,30 @@ public function destroy($id) {
 }
 public function admin()
 {
-    // Ambil data film yang statusnya now_playing
-    $movies = DB::table('tabel_film')->where('status', 'now_playing')->get();
-    
-    // Ambil data film yang statusnya coming_soon (Ini yang bikin error kalau tidak ada)
-    $comingSoonMovies = DB::table('tabel_film')->where('status', 'coming_soon')->get();
+    // Film now playing
+    $movies = DB::table('tabel_film')
+        ->where('status', 'now_playing')
+        ->get();
 
-    // Kirim KEDUA variabel ke view
-    return view('Admin.homeAdmin', compact('movies', 'comingSoonMovies'));
+    // Film coming soon
+    $comingSoonMovies = DB::table('tabel_film')
+        ->where('status', 'coming_soon')
+        ->get();
+
+    // Lokasi bioskop
+    $lokasis = DB::table('tabel_lokasi')->get();
+
+    // Studio (kalau dropdown studio dipakai di halaman ini)
+    $studios = DB::table('tabel_studio')
+        ->join('tabel_lokasi', 'tabel_studio.id_lokasi', '=', 'tabel_lokasi.id_lokasi')
+        ->select('tabel_studio.*', 'tabel_lokasi.nama_lokasi')
+        ->get();
+
+    return view('Admin.homeAdmin', compact(
+        'movies',
+        'comingSoonMovies',
+        'lokasis',
+        'studios'
+    ));
 }
 }

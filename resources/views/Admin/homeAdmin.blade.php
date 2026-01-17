@@ -154,6 +154,14 @@
 <div id="modalJadwal" class="modal-jadwal">
   <div class="modal-box">
 
+    @if (session('error'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                document.getElementById('modalJadwal').style.display = 'flex';
+            });
+        </script>
+    @endif
+
     <h3>Atur Jadwal Film</h3>
     <p class="subtitle" id="judulFilmJadwal"></p>
 
@@ -164,20 +172,33 @@
       <div class="form-group">
         <label>Lokasi</label>
         <select name="id_lokasi" required>
-          <option value="1">Mall Taman Anggrek</option>
-          <option value="2">Grand Indonesia</option>
-          <option value="3">Mall Of Indonesia</option>
-          <option value="4">Green Pramuka Mall</option>
+        <option value="">-- Pilih Lokasi --</option>
+            @foreach ($lokasis as $lokasi)
+                <option value="{{ $lokasi->id_lokasi }}">
+                    {{ $lokasi->nama_lokasi }}
+                </option>
+            @endforeach
         </select>
       </div>
 
       <div class="form-group">
         <label>Studio</label>
         <select name="id_studio" required>
-          <option value="1">Regular</option>
-          <option value="2">The Premiere</option>
-          <option value="3">IMAX</option>
-        </select>
+            <option value="">-- Pilih Studio --</option>
+            @foreach ($studios as $studio)
+                <option value="{{ $studio->id_studio }}">
+                    {{ $studio->nama_studio }} ({{ $studio->nama_lokasi }})
+                </option>
+            @endforeach
+    </select>
+        @if (session('error'))
+            <div style="
+                margin-top:6px;
+                font-size:12px;
+                color:#ff4d4f;">
+                {{ session('error') }}
+            </div>
+        @endif
       </div>
 
       <div class="form-group">

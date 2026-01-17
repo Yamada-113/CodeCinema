@@ -8,6 +8,10 @@ class TiketController extends Controller
 {
     public function result($paymentId)
     {
+/**
+ * Jadi gni...di sni kita cek dulu nih klo id_pembayaran itu ada apa engga
+ * klo gk ada ya di abort/di stop trs bakal lngsng keluar 404 krn kita pakai ini abort(404,....);
+ */
         $payment = DB::table('tabel_pembayaran')
         ->where('id_pembayaran', $paymentId)
         ->first();
@@ -15,7 +19,12 @@ class TiketController extends Controller
         if (!$payment) {
             abort(404, 'Data pembayaran tidak ditemukan');
         }
-
+/**
+ * Di sni sama jga lah kyk yg buat si id_pembayaran bedanya cuma caranya dia handling validasinya
+ * klo si email ini dia bakal lngsng return ke halaman yg sebelumnya jadi klo kita mau pay/bayar nih tpi data gk valid
+ * akses kita bakal lngsng di tolak buat ke view si tiket nya, jadi otomatis bakal stay ke halaman yg sblmnya
+ * nih ininya return redirect('/')
+ */
         $user = DB::table('tabel_user')
             ->where('email', $payment->email)
             ->first();
@@ -26,6 +35,9 @@ class TiketController extends Controller
         }
 
         // ================= AMBIL DARI JADWAL =================
+/**
+ * Ini nge gabungin bbrp kolom dari tabel lain intinya 
+ */
         $ticket = DB::table('tabel_pembayaran')
         ->join('jadwal_tayang', 'jadwal_tayang.id_jadwal', '=', 'tabel_pembayaran.id_jadwal')
         ->join('tabel_film', 'tabel_film.id_film', '=', 'jadwal_tayang.id_film')

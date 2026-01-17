@@ -29,6 +29,8 @@ class JadwalController extends Controller
         ->where('status', 'coming_soon')
         ->get();
 
+    $lokasis = DB::table('tabel_lokasi')->get();
+
     $studios = DB::table('tabel_studio')
         ->join('tabel_lokasi', 'tabel_studio.id_lokasi', '=', 'tabel_lokasi.id_lokasi')
         ->select('tabel_studio.*', 'tabel_lokasi.nama_lokasi')
@@ -45,9 +47,10 @@ class JadwalController extends Controller
         )
         ->get();
 
-    return view('homeAdmin', compact(
+    return view('Admin.homeAdmin', compact(
         'movies',
         'comingSoonMovies',
+        'lokasis',
         'studios',
         'jadwals'
     ));
@@ -82,18 +85,26 @@ class JadwalController extends Controller
     {
         $request->validate([
         'id_film'      => 'required|exists:tabel_film,id_film',
-        'id_lokasi'    => 'required|exists:tabel_lokasi,id_lokasi',  
         'id_studio'    => 'required|exists:tabel_studio,id_studio', 
         'jam_tayang'   => 'required',
         'harga_tiket'  => 'required|numeric'
     ]);
 
+    $validStudio = DB::table('tabel_studio')
+    ->where('id_studio', $request->id_studio)
+    ->where('id_lokasi', $request->id_lokasi)
+    ->exists();
+
+    if (!$validStudio) {
+        return redirect()->back()
+        ->withInput()
+        ->with('error', 'Studio tidak sesuai dengan lokasi yang dipilih!');
+    }
 
         // CEK DUPLIKAT JADWAL
         $exists = DB::table('jadwal_tayang')
             ->where([
                 'id_film'   => $request->id_film,
-                'id_lokasi'  => $request->id_lokasi, 
                 'id_studio' => $request->id_studio,
                 'tanggal'   => $request->tanggal,
                 'jam_tayang'       => $request->jam_tayang
@@ -110,7 +121,6 @@ class JadwalController extends Controller
         $exists = DB::table('jadwal_tayang')
             ->where([
                 'id_film'    => $request->id_film,
-                'id_lokasi'  => $request->id_lokasi,
                 'id_studio'  => $request->id_studio,
                 'tanggal'    => $tanggal,
                 'jam_tayang' => $request->jam_tayang
@@ -119,7 +129,6 @@ class JadwalController extends Controller
         if (!$exists) {
             DB::table('jadwal_tayang')->insert([
                 'id_film'     => $request->id_film,
-                'id_lokasi'   => $request->id_lokasi,
                 'id_studio'   => $request->id_studio,
                 'tanggal'     => $tanggal,
                 'jam_tayang'  => $request->jam_tayang,
@@ -128,8 +137,20 @@ class JadwalController extends Controller
         }
     }
 
+    foreach ($request->jam_tayang as $jam) {
+    if (!$jam) continue;
 
-
+    for ($i = 0; $i < 7; $i++) {
+        DB::table('jadwal_tayang')->insert([
+            'id_film'     => $request->id_film,
+            'id_lokasi'   => $request->id_lokasi,
+            'id_studio'   => $request->id_studio,
+            'tanggal'     => Carbon::today()->addDays($i),
+            'jam_tayang'  => $jam,
+            'harga_tiket' => $request->harga_tiket
+        ]);
+    }
+}
         return back()->with('success', 'Jadwal berhasil ditambahkan');
     }
 
