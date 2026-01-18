@@ -80,7 +80,7 @@ Route::get('/forgot-password', [LoginController::class, 'forgotPasswordForm'])
 Route::post('/forgot-password', [LoginController::class, 'resetPassword'])
     ->name('password.update');
     
-// ================= BOOKING HISTORY =================
-Route::get('/admin/booking-history', [MovieController::class, 'bookingHistory'])
+// Ubah dari MovieController ke BookingHistoryController
+Route::get('/admin/booking-history', [BookingHistoryController::class, 'index'])
     ->name('admin.booking.history');
 Route::get('/booking-history', [BookingHistoryController::class, 'index']);

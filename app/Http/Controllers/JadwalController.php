@@ -82,42 +82,32 @@ class JadwalController extends Controller
      * ============================
      */
     public function store(Request $request)
-    {
-        $request->validate([
+{
+    // 1. Validasi Input
+    $request->validate([
         'id_film'      => 'required|exists:tabel_film,id_film',
         'id_studio'    => 'required|exists:tabel_studio,id_studio', 
-        'jam_tayang'   => 'required',
+        'jam_tayang'   => 'required', // Ini string, bukan array
         'harga_tiket'  => 'required|numeric'
     ]);
 
-    $validStudio = DB::table('tabel_studio')
-    ->where('id_studio', $request->id_studio)
-    ->where('id_lokasi', $request->id_lokasi)
-    ->exists();
+    // 2. Cek apakah studio cocok dengan lokasi (opsional tapi bagus untuk keamanan)
+    if ($request->has('id_lokasi')) {
+        $validStudio = DB::table('tabel_studio')
+            ->where('id_studio', $request->id_studio)
+            ->where('id_lokasi', $request->id_lokasi)
+            ->exists();
 
-    if (!$validStudio) {
-        return redirect()->back()
-        ->withInput()
-        ->with('error', 'Studio tidak sesuai dengan lokasi yang dipilih!');
+        if (!$validStudio) {
+            return redirect()->back()->with('error', 'Studio tidak sesuai dengan lokasi!');
+        }
     }
 
-        // CEK DUPLIKAT JADWAL
-        $exists = DB::table('jadwal_tayang')
-            ->where([
-                'id_film'   => $request->id_film,
-                'id_studio' => $request->id_studio,
-                'tanggal'   => $request->tanggal,
-                'jam_tayang'       => $request->jam_tayang
-            ])->exists();
-
-        if ($exists) {
-            return back()->with('error', 'Jadwal sudah ada!');
-        }
-
-        // GENERATE 7 HARI KE DEPAN
-        for ($i = 0; $i < 7; $i++) {
+    // 3. Generate Jadwal Otomatis untuk 7 Hari ke Depan
+    for ($i = 0; $i < 7; $i++) {
         $tanggal = Carbon::today()->addDays($i)->format('Y-m-d');
 
+        // Cek supaya tidak duplikat di hari dan jam yang sama
         $exists = DB::table('jadwal_tayang')
             ->where([
                 'id_film'    => $request->id_film,
@@ -129,7 +119,7 @@ class JadwalController extends Controller
         if (!$exists) {
             DB::table('jadwal_tayang')->insert([
                 'id_film'     => $request->id_film,
-                'id_studio'   => $request->id_studio,
+                'id_studio'   => $request->id_studio, // Hanya studio, tanpa id_lokasi
                 'tanggal'     => $tanggal,
                 'jam_tayang'  => $request->jam_tayang,
                 'harga_tiket' => $request->harga_tiket
@@ -137,22 +127,8 @@ class JadwalController extends Controller
         }
     }
 
-    foreach ($request->jam_tayang as $jam) {
-    if (!$jam) continue;
-
-    for ($i = 0; $i < 7; $i++) {
-        DB::table('jadwal_tayang')->insert([
-            'id_film'     => $request->id_film,
-            'id_lokasi'   => $request->id_lokasi,
-            'id_studio'   => $request->id_studio,
-            'tanggal'     => Carbon::today()->addDays($i),
-            'jam_tayang'  => $jam,
-            'harga_tiket' => $request->harga_tiket
-        ]);
-    }
+    return back()->with('success', 'Jadwal 7 hari ke depan berhasil dibuat!');
 }
-        return back()->with('success', 'Jadwal berhasil ditambahkan');
-    }
 
     /**
      * ============================

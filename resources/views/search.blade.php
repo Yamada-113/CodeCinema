@@ -93,7 +93,6 @@
 <nav class="bottom-nav">
   <a href="/home">Home</a>
   <a href="/Search" class="active">Search</a>
-  <a href="/my-bookings">My Bookings</a>
   <a href="/profile">Profile</a>
 </nav>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
